@@ -1,19 +1,29 @@
 ---
-title: "Assignment 1"
-date: "2022-10-01"
+title: "Startup Deals"
+date: "2022-10-15"
+format:
+  html:
+    toc: true
+    code-folding: false
+    code-summary: "Code"
+    number-sections: false
+    smooth-scroll: true
 ---
 
-This is a template example qmd output page. You may see an example R code below.
+This report summarizes some of the analyzes startups getting investments from a variety of domestic and international investors. For more information visit [KPMG](https://home.kpmg/tr/tr/home.html) and [212](https://212.vc/)'s [Turkish Startup Investment Review 2021](https://assets.kpmg/content/dam/kpmg/tr/pdf/2022/03/turkish-startup-investments-review-2021.pdf) report.
 
-```{r}
+## Data Preparation
+
+```{r, required libraries, message = FALSE}
+# Required libraries
 library(dplyr)
 library(tidyverse)
 library(scales)
 library(ggplot2)
 library(readxl)
 ```
-## Data Preparation
-```{r}
+
+```{r, warning = FALSE}
 url <- "https://github.com/berkorbay/datasets/raw/master/startup_deals/startup_deals_2021.xlsx"
 destfile <- "sd21.xlsx"
 curl::curl_download(url, destfile)
@@ -22,20 +32,32 @@ sd21 <- sd21 %>% mutate(`Deal Value (USD)` = as.numeric(`Deal Value (USD)`))
 sd21$`Stake (%)`<- str_remove(sd21$`Stake (%)`, pattern = "%")
 sd21 <- sd21 %>% mutate(`Stake (%)` = as.numeric(`Stake (%)`))
 ```
-## Key Points
+
+## Key Takeaways
+- The e-commerce and delivery sectors received the most investment by far. But we noticed something that most of these investments were made in only 2 companies, Trendyol with 1.435.000.000 and Getir with 1.018.000.000.
+- It is seen that the most investments are made from the USA in terms of total USD value. Count of investors from Turkey is about 90% according to total count.
+- Gaming sector is quite popular compared to other sectors according to all investment stages.Although it may not receive the most investment in terms of total value, the sector that receives the most investment in terms of numbers is the gaming sector. The fact that this sector receives the most investment especially in the seed stage may be an indication that this sector will grow in the short-medium term.
+---
+
+### Distribution of investments by sectors
 ```{r}
-"Distribution of investments by sectors"
 sd21 %>%group_by(`Sector`)%>%
   summarize(sum =sum(`Deal Value (USD)`)) %>%
   arrange(desc(sum))
-"which countries the investors invested from and how much they invested"
+```
+
+### Which countries the investors invested from and how much they invested?
+```{r}
 sd21 %>%group_by(`Investor's Origin`)%>%
   summarize(sum =sum(`Deal Value (USD)`),count=n()) %>%
   arrange(desc(sum))
 sd21 %>%group_by(`Investor's Origin`)%>%
   summarize(sum =sum(`Deal Value (USD)`,na.rm = TRUE),count=n()) %>%
   arrange(desc(count))
-"How many investment is received by each sector according to the stages?"
+```
+
+### How many investment received by each sector according to the stages?
+```{r}
 SeedStage <- sd21 %>%filter(`Investment Stage` == "Seed Stage") %>% group_by(`Sector`)%>%
   summarize(count=n()) %>%
   arrange(desc(count))
@@ -55,15 +77,19 @@ all <-  sd21 %>% group_by(`Sector`)%>%
 allc <- all %>% left_join(SeedStage, by = "Sector")  %>% left_join(EarlyVC, by = "Sector") %>% left_join(LaterVC, by = "Sector") %>% left_join(Acquisition, by = "Sector")
 colnames(allc) <- c("Sector","All","Seed","Early","Later","Acquisition")
 allc
+```
 
-"In which sectors has America, the country with the highest investment, invested?"
+### What sector did American investors invest in?
+```{r}
 sd21 %>%
   filter(str_detect(`Investor's Origin`, "USA")) %>%
   group_by(`Sector`) %>% 
   summarise(count = n()) %>%
   arrange(desc(count))
+```
 
-"What percentage of investors had investors during the investment phases"
+### Percentage of investors during the investment phases
+```{r}
 financial_investor <- sd21 %>% 
   group_by(`Investment Stage`) %>% 
   transmute(Percent = label_percent()(sum(`Financial Investor` == "Yes")/n()))
