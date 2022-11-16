@@ -3,17 +3,21 @@ title: "Assignment 1"
 date: "2022-10-01"
 ---
 
-This is a template example qmd output page. You may see an example R code below.
+## R Libraries
 
 ```{r}
+#| warning: false
 library(dplyr)
 library(tidyverse)
 library(scales)
 library(ggplot2)
 library(readxl)
 ```
+
 ## Data Preparation
+
 ```{r}
+#| warning: false
 url <- "https://github.com/berkorbay/datasets/raw/master/startup_deals/startup_deals_2021.xlsx"
 destfile <- "sd21.xlsx"
 curl::curl_download(url, destfile)
@@ -22,20 +26,40 @@ sd21 <- sd21 %>% mutate(`Deal Value (USD)` = as.numeric(`Deal Value (USD)`))
 sd21$`Stake (%)`<- str_remove(sd21$`Stake (%)`, pattern = "%")
 sd21 <- sd21 %>% mutate(`Stake (%)` = as.numeric(`Stake (%)`))
 ```
+
 ## Key Points
+
+-   The gaming industry is the industry that receives the most investment.
+-   More (86%) seed investments were made in the game industry. Seed investments give the signals that the gaming industry will grow even more in the future.
+-   Turkey is the country that invests the most, but its average per investment is lower than the other top 5 countries.
+-   Trendyol, Getir, Hepsiburada, Dream Games are the top 4 companies that collect the most investment. (86% of total investment)
+
+### **Distribution of investments by sectors**
 ```{r}
-"Distribution of investments by sectors"
+#| warning: false
+
 sd21 %>%group_by(`Sector`)%>%
   summarize(sum =sum(`Deal Value (USD)`)) %>%
   arrange(desc(sum))
-"which countries the investors invested from and how much they invested"
+```
+
+
+### **which countries the investors invested from and how much they invested**
+```{r}
+#| warning: false
+
 sd21 %>%group_by(`Investor's Origin`)%>%
   summarize(sum =sum(`Deal Value (USD)`),count=n()) %>%
   arrange(desc(sum))
 sd21 %>%group_by(`Investor's Origin`)%>%
-  summarize(sum =sum(`Deal Value (USD)`,na.rm = TRUE),count=n()) %>%
+  summarize(sum =sum(`Deal Value (USD)`,na.rm = TRUE),count=n(),average=sum/count) %>%
   arrange(desc(count))
-"How many investment is received by each sector according to the stages?"
+```
+
+### **How many investment is received by each sector according to the stages?**
+```{r}
+#| warning: false
+
 SeedStage <- sd21 %>%filter(`Investment Stage` == "Seed Stage") %>% group_by(`Sector`)%>%
   summarize(count=n()) %>%
   arrange(desc(count))
@@ -55,15 +79,70 @@ all <-  sd21 %>% group_by(`Sector`)%>%
 allc <- all %>% left_join(SeedStage, by = "Sector")  %>% left_join(EarlyVC, by = "Sector") %>% left_join(LaterVC, by = "Sector") %>% left_join(Acquisition, by = "Sector")
 colnames(allc) <- c("Sector","All","Seed","Early","Later","Acquisition")
 allc
+```
 
-"In which sectors has America, the country with the highest investment, invested?"
+### **How many investment is received by each origin according to the stages?**
+```{r}
+#| warning: false
+
+InvestorsOriginSeedStage <- sd21 %>%filter(`Investment Stage` == "Seed Stage") %>% group_by(`Investor's Origin`)%>%
+  summarize(count=n()) %>%
+  arrange(desc(count))
+InvestorsOriginEarlyVC <- sd21 %>%filter(`Investment Stage` == "Early VC Stage") %>% group_by(`Investor's Origin`)%>%
+  summarize(count=n()) %>%
+  arrange(desc(count))
+InvestorsOriginLaterVC  <- sd21 %>%filter(`Investment Stage` == "Later VC Stage") %>% group_by(`Investor's Origin`)%>%
+  summarize(count=n()) %>%
+  arrange(desc(count))
+InvestorsOriginAcquisition <- sd21 %>%filter(`Investment Stage` == "Acquisition") %>% group_by(`Investor's Origin`)%>%
+  summarize(count=n()) %>%
+  arrange(desc(count))
+InvestorsOriginall <-  sd21 %>% group_by(`Investor's Origin`)%>%
+  summarize(count=n()) %>%
+  arrange(desc(count))
+
+InvestorsOriginallc <- InvestorsOriginall %>% left_join(InvestorsOriginSeedStage, by = "Investor's Origin")  %>% left_join(InvestorsOriginEarlyVC, by = "Investor's Origin") %>% left_join(InvestorsOriginLaterVC, by = "Investor's Origin") %>% left_join(InvestorsOriginAcquisition, by = "Investor's Origin")
+colnames(InvestorsOriginallc) <- c("Investor's Origin","All","Seed","Early","Later","Acquisition")
+InvestorsOriginallc
+```
+
+
+### **Getir is the only company that have Later VC Stage**
+
+```{r}
+#| warning: false
+
+sd21 %>%filter(`Investment Stage` == "Later VC Stage") %>% group_by(`Target Company`)%>%
+  summarize(count=n()) %>%
+  arrange(desc(count))
+```
+
+### **Trendyol, Getir, Hepsiburada, Dream Games are the top 4 companies that collect the most investment. (86% of total investment)**
+```{r}
+#| warning: false
+
+
+sd21 %>% group_by(`Target Company`)%>%
+  summarize(sum=sum(`Deal Value (USD)`,na.rm = TRUE) ) %>%
+  arrange(desc(sum)) %>%
+  top_n(4)
+```
+
+### **In which sectors has America, the country with the highest investment, invested?**
+```{r}
+#| warning: false
+
 sd21 %>%
   filter(str_detect(`Investor's Origin`, "USA")) %>%
   group_by(`Sector`) %>% 
   summarise(count = n()) %>%
   arrange(desc(count))
+```
 
-"What percentage of investors had investors during the investment phases"
+### **What percentage of investors had investors during the investment phases**
+```{r}
+#| warning: false
+
 financial_investor <- sd21 %>% 
   group_by(`Investment Stage`) %>% 
   transmute(Percent = label_percent()(sum(`Financial Investor` == "Yes")/n()))
