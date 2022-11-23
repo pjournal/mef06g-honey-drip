@@ -334,12 +334,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>data_xl <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(PATH, <span class="at">range =</span> <span class="fu">cell_rows</span>(<span class="dv">14</span><span class="sc">:</span><span class="dv">129</span>), <span class="at">col_names =</span> <span class="fu">names</span>(<span class="fu">read_excel</span>(PATH, <span class="at">skip =</span> <span class="dv">2</span>))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save data_xl as House Sales by Provinces.rds</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(data_xl, <span class="at">file =</span> <span class="st">"House Sales by Provinces.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fill NA Values</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>data_xl <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fill</span>(<span class="fu">colnames</span>(data_xl[<span class="dv">1</span>]), <span class="at">.direction =</span> <span class="st">"downup"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 116 × 84
+   Yıl      …¹ Ay\nM…² Topla…³ Adana Adıya…⁴ Afyon…⁵  Ağrı Aksaray Amasya Ankara
+         &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+ 1        2013 Ocak -…   87444  1548     261     475   105     329    245  11215
+ 2        2013 Şubat …   88519  1667     421     506   198     269    290  11281
+ 3        2013 Mart -…   97956  1826     310     563    94     301    316  12291
+ 4        2013 Nisan …   95381  1875     281     458   164     315    302  11889
+ 5        2013 Mayıs …  103261  1941     326     549   141     400    364  12638
+ 6        2013 Hazira…   96424  1987     346     454   112     356    356  11692
+ 7        2013 Temmuz…  106636  1986     404     563   130     401    463  12428
+ 8        2013 Ağusto…   84480  1426     352     472   118     447    330   9636
+ 9        2013 Eylül …  102280  1624     422     536   126     519    343  12206
+10        2013 Ekim -…   76344  1232     285     490   103     299    242   8231
+# … with 106 more rows, 74 more variables: Antalya &lt;dbl&gt;, Ardahan &lt;dbl&gt;,
+#   Artvin &lt;dbl&gt;, Aydın &lt;dbl&gt;, Balıkesir &lt;dbl&gt;, Bartın &lt;dbl&gt;, Batman &lt;dbl&gt;,
+#   Bayburt &lt;dbl&gt;, Bilecik &lt;dbl&gt;, Bingöl &lt;dbl&gt;, Bitlis &lt;dbl&gt;, Bolu &lt;dbl&gt;,
+#   Burdur &lt;dbl&gt;, Bursa &lt;dbl&gt;, Çanakkale &lt;dbl&gt;, Çankırı &lt;dbl&gt;, Çorum &lt;dbl&gt;,
+#   Denizli &lt;dbl&gt;, Diyarbakır &lt;dbl&gt;, Düzce &lt;dbl&gt;, Edirne &lt;dbl&gt;, Elazığ &lt;dbl&gt;,
+#   Erzincan &lt;dbl&gt;, Erzurum &lt;dbl&gt;, Eskişehir &lt;dbl&gt;, Gaziantep &lt;dbl&gt;,
+#   Giresun &lt;dbl&gt;, Gümüşhane &lt;dbl&gt;, Hakkari &lt;chr&gt;, Hatay &lt;dbl&gt;, Iğdır &lt;dbl&gt;, …</code></pre>
+</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restore the House Sales by Provinces.rds</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">"House Sales by Provinces.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save data_xl as House Sales by Provinces.rds</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(data_xl, <span class="at">file =</span> <span class="st">"House Sales by Provinces.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restore the House Sales by Provinces.rds</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">"House Sales by Provinces.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 84
   Yıl       …¹ Ay\nM…² Topla…³ Adana Adıya…⁴ Afyon…⁵  Ağrı Aksaray Amasya Ankara
@@ -363,9 +390,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="building-permits-and-rates-of-change" class="level3" data-number="2.0.4">
 <h3 data-number="2.0.4" class="anchored" data-anchor-id="building-permits-and-rates-of-change"><span class="header-section-number">2.0.4</span> Building Permits and Rates of Change</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>PATH <span class="ot">&lt;-</span> <span class="st">"data/Building Permits and Rates of Change.xls"</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>building_permits <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(PATH, <span class="at">range =</span> <span class="fu">cell_rows</span>(<span class="dv">24</span><span class="sc">:</span><span class="dv">105</span>), <span class="at">col_names =</span> <span class="fu">names</span>(<span class="fu">read_excel</span>(PATH, <span class="at">skip =</span> <span class="dv">2</span>))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>PATH <span class="ot">&lt;-</span> <span class="st">"data/Building Permits and Rates of Change.xls"</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>building_permits <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(PATH, <span class="at">range =</span> <span class="fu">cell_rows</span>(<span class="dv">24</span><span class="sc">:</span><span class="dv">105</span>), <span class="at">col_names =</span> <span class="fu">names</span>(<span class="fu">read_excel</span>(PATH, <span class="at">skip =</span> <span class="dv">2</span>))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>New names:
 • `Bina sayısı Number of building` -&gt; `Bina sayısı Number of building...3`
@@ -390,37 +417,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fill NA Values</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>building_permits <span class="ot">&lt;-</span> building_permits <span class="sc">%&gt;%</span> </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fill</span>(<span class="fu">colnames</span>(building_permits)[<span class="dv">1</span>], <span class="at">.direction =</span> <span class="st">"downup"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select_if</span>(<span class="sc">~</span> <span class="sc">!</span><span class="fu">all</span>(<span class="fu">is.na</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fill NA Values</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>building_permits <span class="ot">&lt;-</span> building_permits <span class="sc">%&gt;%</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fill</span>(<span class="fu">colnames</span>(building_permits)[<span class="dv">1</span>], <span class="at">.direction =</span> <span class="st">"downup"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select_if</span>(<span class="sc">~</span> <span class="sc">!</span><span class="fu">all</span>(<span class="fu">is.na</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CP: Construction Permits</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># OP: Occupancy Permits</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(building_permits) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Year'</span>,</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'Quarter'</span>,</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - Number of Building'</span>,</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - NoB - Annual Change (%)'</span>,</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - Number of Dwelling Unit'</span>,</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - NoDU - Annual Change (%)'</span>,</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - Floor Area (m2)'</span>,</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - Floor Area - Annual Change (%)'</span>,</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - Number of Building'</span>,</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - NoB - Annual Change (%)'</span>,</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - Number of Dwelling Unit'</span>,</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - NoDU - Annual Change (%)'</span>,</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - Floor Area (m2)'</span>,</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - Floor Area - Annual Change (%)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CP: Construction Permits</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># OP: Occupancy Permits</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(building_permits) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Year'</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'Quarter'</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - Number of Building'</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - NoB - Annual Change (%)'</span>,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - Number of Dwelling Unit'</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - NoDU - Annual Change (%)'</span>,</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - Floor Area (m2)'</span>,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - Floor Area - Annual Change (%)'</span>,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - Number of Building'</span>,</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - NoB - Annual Change (%)'</span>,</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - Number of Dwelling Unit'</span>,</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - NoDU - Annual Change (%)'</span>,</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - Floor Area (m2)'</span>,</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - Floor Area - Annual Change (%)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save building_permits as Building Permits and Rates of Change.rds</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(building_permits, <span class="at">file =</span> <span class="st">"Building Permits and Rates of Change.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save building_permits as Building Permits and Rates of Change.rds</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(building_permits, <span class="at">file =</span> <span class="st">"Building Permits and Rates of Change.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restore the Building Permits and Rates of Change.RData</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">"Building Permits and Rates of Change.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restore the Building Permits and Rates of Change.RData</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">"Building Permits and Rates of Change.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 14
    Year Quarter CP - N…¹ CP - …² CP - …³ CP - …⁴ CP - …⁵ CP - …⁶ OP - …⁷ OP - …⁸

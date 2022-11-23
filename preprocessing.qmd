@@ -70,6 +70,12 @@ data_xl <- read_excel(PATH, range = cell_rows(14:129), col_names = names(read_ex
 ```
 
 ```{r}
+# Fill NA Values
+data_xl %>%
+    fill(colnames(data_xl[1]), .direction = "downup")
+```
+
+```{r}
 # Save data_xl as House Sales by Provinces.rds
 saveRDS(data_xl, file = "House Sales by Provinces.rds")
 ```
