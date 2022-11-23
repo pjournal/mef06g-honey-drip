@@ -202,6 +202,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#house-sales-by-type-and-state" id="toc-house-sales-by-type-and-state" class="nav-link" data-scroll-target="#house-sales-by-type-and-state"><span class="toc-section-number">2.0.2</span>  House Sales by Type and State</a></li>
   <li><a href="#house-sales-by-provinces" id="toc-house-sales-by-provinces" class="nav-link" data-scroll-target="#house-sales-by-provinces"><span class="toc-section-number">2.0.3</span>  House Sales by Provinces</a></li>
   <li><a href="#building-permits-and-rates-of-change" id="toc-building-permits-and-rates-of-change" class="nav-link" data-scroll-target="#building-permits-and-rates-of-change"><span class="toc-section-number">2.0.4</span>  Building Permits and Rates of Change</a></li>
+  <li><a href="#house-sales-to-foreigners-by-year" id="toc-house-sales-to-foreigners-by-year" class="nav-link" data-scroll-target="#house-sales-to-foreigners-by-year"><span class="toc-section-number">2.0.5</span>  House sales to foreigners by year</a></li>
+  <li><a href="#house-sales-to-foreigners-by-month" id="toc-house-sales-to-foreigners-by-month" class="nav-link" data-scroll-target="#house-sales-to-foreigners-by-month"><span class="toc-section-number">2.0.6</span>  House sales to foreigners by month</a></li>
   </ul>
 </nav>
     </div>
@@ -465,6 +467,61 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #   ³​`CP - Number of Dwelling Unit`, ⁴​`CP - NoDU - Annual Change (%)`,
 #   ⁵​`CP - Floor Area (m2)`, ⁶​`CP - Floor Area - Annual Change (%)`,
 #   ⁷​`OP - Number of Building`, ⁸​`OP - NoB - Annual Change (%)`</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>House_sales_to_foreigners_by_province <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/House sales to foreigners by province.xls"</span>, </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                                                    <span class="at">sheet =</span> <span class="st">"HouseSalesByProvince"</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>House_sales_to_foreigners_by_province <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(House_sales_to_foreigners_by_province,<span class="dv">3</span><span class="sc">:</span><span class="dv">14</span>,<span class="at">names_to =</span> <span class="st">"Month"</span>, <span class="at">values_to =</span> <span class="st">"sales"</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(House_sales_to_foreigners_by_province)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+   Year Province Month    sales
+  &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt;
+1  2013 Antalya  January    448
+2  2013 Antalya  February   357
+3  2013 Antalya  March      495
+4  2013 Antalya  April      445
+5  2013 Antalya  May        476
+6  2013 Antalya  June       358</code></pre>
+</div>
+</div>
+</section>
+<section id="house-sales-to-foreigners-by-year" class="level3" data-number="2.0.5">
+<h3 data-number="2.0.5" class="anchored" data-anchor-id="house-sales-to-foreigners-by-year"><span class="header-section-number">2.0.5</span> House sales to foreigners by year</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a> House_sales_to_foreigners_year <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/House sales to foreigners.xls"</span>, </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">sheet =</span> <span class="st">"Year"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(House_sales_to_foreigners_year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+   Year   Total `Sales to foreigners` `Share (%)`
+  &lt;dbl&gt;   &lt;dbl&gt;                 &lt;dbl&gt;       &lt;dbl&gt;
+1  2013 1157190                 12181        1.05
+2  2014 1165381                 18959        1.63
+3  2015 1289320                 22830        1.77
+4  2016 1341453                 18189        1.36
+5  2017 1409314                 22234        1.58
+6  2018 1375398                 39663        2.88</code></pre>
+</div>
+</div>
+</section>
+<section id="house-sales-to-foreigners-by-month" class="level3" data-number="2.0.6">
+<h3 data-number="2.0.6" class="anchored" data-anchor-id="house-sales-to-foreigners-by-month"><span class="header-section-number">2.0.6</span> House sales to foreigners by month</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>House_sales_to_foreigners_month <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/House sales to foreigners.xls"</span>, </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">sheet =</span> <span class="st">"Month"</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(House_sales_to_foreigners_month)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+   Year Month     Total `Sales to foreigners` `Share (%)`
+  &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;                 &lt;dbl&gt;       &lt;dbl&gt;
+1  2013 January   87444                   888       1.02 
+2  2013 February  88519                   716       0.809
+3  2013 March     97956                   962       0.982
+4  2013 April     95381                   947       0.993
+5  2013 May      103261                   938       0.908
+6  2013 June      96424                   783       0.812</code></pre>
 </div>
 </div>
 
