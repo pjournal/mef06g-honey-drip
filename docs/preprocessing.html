@@ -198,9 +198,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link active" data-scroll-target="#preprocessing"><span class="toc-section-number">2.1</span>  Preprocessing</a></li>
-  <li><a href="#necessary-libraries" id="toc-necessary-libraries" class="nav-link" data-scroll-target="#necessary-libraries"><span class="toc-section-number">2.2</span>  Necessary libraries</a></li>
-  <li><a href="#preprocess" id="toc-preprocess" class="nav-link" data-scroll-target="#preprocess"><span class="toc-section-number">2.3</span>  PREPROCESS</a></li>
+  <li><a href="#construction-cost-index-2015100-and-rate-of-change" id="toc-construction-cost-index-2015100-and-rate-of-change" class="nav-link active" data-scroll-target="#construction-cost-index-2015100-and-rate-of-change"><span class="toc-section-number">2.0.1</span>  Construction Cost Index (2015=100) and Rate of Change</a></li>
+  <li><a href="#house-sales-by-type-and-state" id="toc-house-sales-by-type-and-state" class="nav-link" data-scroll-target="#house-sales-by-type-and-state"><span class="toc-section-number">2.0.2</span>  House Sales by Type and State</a></li>
+  <li><a href="#house-sales-by-provinces" id="toc-house-sales-by-provinces" class="nav-link" data-scroll-target="#house-sales-by-provinces"><span class="toc-section-number">2.0.3</span>  House Sales by Provinces</a></li>
+  <li><a href="#building-permits-and-rates-of-change" id="toc-building-permits-and-rates-of-change" class="nav-link" data-scroll-target="#building-permits-and-rates-of-change"><span class="toc-section-number">2.0.4</span>  Building Permits and Rates of Change</a></li>
   </ul>
 </nav>
     </div>
@@ -229,66 +230,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="preprocessing" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="preprocessing"><span class="header-section-number">2.1</span> Preprocessing</h2>
-</section>
-<section id="necessary-libraries" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="necessary-libraries"><span class="header-section-number">2.2</span> Necessary libraries</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'tidyverse' was built under R version 4.2.2</code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Required libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(zoo)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reactable)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
-✔ tibble  3.1.8      ✔ dplyr   1.0.10
-✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-✔ readr   2.1.3      ✔ forcats 0.5.2 
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'readxl' was built under R version 4.2.2</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'lubridate'
-
-The following objects are masked from 'package:base':
-
-    date, intersect, setdiff, union</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(zoo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'zoo' was built under R version 4.2.2</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'zoo'
-
-The following objects are masked from 'package:base':
-
-    as.Date, as.Date.numeric</code></pre>
-</div>
-</div>
-</section>
-<section id="preprocess" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="preprocess"><span class="header-section-number">2.3</span> PREPROCESS</h2>
+<section id="construction-cost-index-2015100-and-rate-of-change" class="level3" data-number="2.0.1">
+<h3 data-number="2.0.1" class="anchored" data-anchor-id="construction-cost-index-2015100-and-rate-of-change"><span class="header-section-number">2.0.1</span> Construction Cost Index (2015=100) and Rate of Change</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="st">"First part of cleaning data done in excel then I use Pivot longer Function"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "First part of cleaning data done in excel then I use Pivot longer Function"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ConsIndex <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/Constructioncost.xls"</span>, </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">sheet =</span> <span class="st">"Index"</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>ConsIndex <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(ConsIndex,<span class="dv">2</span><span class="sc">:</span><span class="dv">13</span>,<span class="at">names_to =</span> <span class="st">"Month"</span>, <span class="at">values_to =</span> <span class="st">"index"</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>ConsIndex<span class="sc">$</span>Month <span class="ot">&lt;-</span> <span class="fu">match</span>(ConsIndex<span class="sc">$</span>Month, month.name)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ConsIndex) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First part of cleaning data done in excel then I use Pivot longer Function</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ConsIndex <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/Constructioncost.xls"</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">sheet =</span> <span class="st">"Index"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>ConsIndex <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(ConsIndex,<span class="dv">2</span><span class="sc">:</span><span class="dv">13</span>,<span class="at">names_to =</span> <span class="st">"Month"</span>, <span class="at">values_to =</span> <span class="st">"index"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>ConsIndex<span class="sc">$</span>Month <span class="ot">&lt;-</span> <span class="fu">match</span>(ConsIndex<span class="sc">$</span>Month, month.name)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ConsIndex) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 3
    Year Month index
@@ -302,15 +265,15 @@ The following objects are masked from 'package:base':
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ConsAnnualChange <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/Constructioncost.xls"</span>, </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">sheet =</span> <span class="st">"Rate"</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ConsAnnualChange <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(ConsAnnualChange,<span class="dv">2</span><span class="sc">:</span><span class="dv">13</span>,<span class="at">names_to =</span> <span class="st">"Month"</span>, <span class="at">values_to =</span> <span class="st">"index"</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>ConsAnnualChange<span class="sc">$</span>Month <span class="ot">&lt;-</span> <span class="fu">match</span>(ConsAnnualChange<span class="sc">$</span>Month, month.name)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>ConsAnnualChange<span class="sc">$</span>index <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(ConsAnnualChange<span class="sc">$</span>index))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ConsAnnualChange <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/Constructioncost.xls"</span>, </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">sheet =</span> <span class="st">"Rate"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ConsAnnualChange <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(ConsAnnualChange,<span class="dv">2</span><span class="sc">:</span><span class="dv">13</span>,<span class="at">names_to =</span> <span class="st">"Month"</span>, <span class="at">values_to =</span> <span class="st">"index"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>ConsAnnualChange<span class="sc">$</span>Month <span class="ot">&lt;-</span> <span class="fu">match</span>(ConsAnnualChange<span class="sc">$</span>Month, month.name)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>ConsAnnualChange<span class="sc">$</span>index <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(ConsAnnualChange<span class="sc">$</span>index))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: NAs introduced by coercion</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ConsAnnualChange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ConsAnnualChange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 3
    Year Month index
@@ -323,15 +286,15 @@ The following objects are masked from 'package:base':
 6  2015     6    NA</code></pre>
 </div>
 </div>
+</section>
+<section id="house-sales-by-type-and-state" class="level3" data-number="2.0.2">
+<h3 data-number="2.0.2" class="anchored" data-anchor-id="house-sales-by-type-and-state"><span class="header-section-number">2.0.2</span> House Sales by Type and State</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="st">"House Sales data was too dirty so I clean it up in excel"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "House Sales data was too dirty so I clean it up in excel"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>HousesalesYear <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/Housesales.xls"</span>, </span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">sheet =</span> <span class="st">"Year"</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(HousesalesYear) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># House Sales data was too dirty so I clean it up in excel</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>HousesalesYear <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/Housesales.xls"</span>, </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">sheet =</span> <span class="st">"Year"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(HousesalesYear) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 10
    Year   Total MSUnit MSShare (%…¹ OSUnit OSSha…² FHUnit FHSha…³ SHUnit SHSha…⁴
@@ -345,9 +308,9 @@ The following objects are masked from 'package:base':
 # … with abbreviated variable names ¹​`MSShare (%)`, ²​`OSShare (%)`,
 #   ³​`FHShare (%)`, ⁴​`SHShare (%)`</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>HousesalesMonth <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/Housesales.xls"</span>, </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">sheet =</span> <span class="st">"Month"</span>)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(HousesalesMonth) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>HousesalesMonth <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/Housesales.xls"</span>, </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">sheet =</span> <span class="st">"Month"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(HousesalesMonth) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 11
    Year Month  Total MSUnit MSSha…¹ OSUnit OSSha…² FHUnit FHSha…³ SHUnit SHSha…⁴
@@ -360,6 +323,121 @@ The following objects are masked from 'package:base':
 6  2013     6  96424  43763    45.4  52661    54.6  43345    45.0  53079    55.0
 # … with abbreviated variable names ¹​`MSShare (%)`, ²​`OSShare (%)`,
 #   ³​`FHShare (%)`, ⁴​`SHShare (%)`</code></pre>
+</div>
+</div>
+</section>
+<section id="house-sales-by-provinces" class="level3" data-number="2.0.3">
+<h3 data-number="2.0.3" class="anchored" data-anchor-id="house-sales-by-provinces"><span class="header-section-number">2.0.3</span> House Sales by Provinces</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>PATH <span class="ot">&lt;-</span> <span class="st">"data/House Sales by Provinces.xls"</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>data_xl <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(PATH, <span class="at">range =</span> <span class="fu">cell_rows</span>(<span class="dv">14</span><span class="sc">:</span><span class="dv">129</span>), <span class="at">col_names =</span> <span class="fu">names</span>(<span class="fu">read_excel</span>(PATH, <span class="at">skip =</span> <span class="dv">2</span>))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save data_xl as House Sales by Provinces.rds</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(data_xl, <span class="at">file =</span> <span class="st">"House Sales by Provinces.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restore the House Sales by Provinces.rds</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">"House Sales by Provinces.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 84
+  Yıl       …¹ Ay\nM…² Topla…³ Adana Adıya…⁴ Afyon…⁵  Ağrı Aksaray Amasya Ankara
+         &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1         2013 Ocak -…   87444  1548     261     475   105     329    245  11215
+2           NA Şubat …   88519  1667     421     506   198     269    290  11281
+3           NA Mart -…   97956  1826     310     563    94     301    316  12291
+4           NA Nisan …   95381  1875     281     458   164     315    302  11889
+5           NA Mayıs …  103261  1941     326     549   141     400    364  12638
+6           NA Hazira…   96424  1987     346     454   112     356    356  11692
+# … with 74 more variables: Antalya &lt;dbl&gt;, Ardahan &lt;dbl&gt;, Artvin &lt;dbl&gt;,
+#   Aydın &lt;dbl&gt;, Balıkesir &lt;dbl&gt;, Bartın &lt;dbl&gt;, Batman &lt;dbl&gt;, Bayburt &lt;dbl&gt;,
+#   Bilecik &lt;dbl&gt;, Bingöl &lt;dbl&gt;, Bitlis &lt;dbl&gt;, Bolu &lt;dbl&gt;, Burdur &lt;dbl&gt;,
+#   Bursa &lt;dbl&gt;, Çanakkale &lt;dbl&gt;, Çankırı &lt;dbl&gt;, Çorum &lt;dbl&gt;, Denizli &lt;dbl&gt;,
+#   Diyarbakır &lt;dbl&gt;, Düzce &lt;dbl&gt;, Edirne &lt;dbl&gt;, Elazığ &lt;dbl&gt;, Erzincan &lt;dbl&gt;,
+#   Erzurum &lt;dbl&gt;, Eskişehir &lt;dbl&gt;, Gaziantep &lt;dbl&gt;, Giresun &lt;dbl&gt;,
+#   Gümüşhane &lt;dbl&gt;, Hakkari &lt;chr&gt;, Hatay &lt;dbl&gt;, Iğdır &lt;dbl&gt;, Isparta &lt;dbl&gt;, …</code></pre>
+</div>
+</div>
+</section>
+<section id="building-permits-and-rates-of-change" class="level3" data-number="2.0.4">
+<h3 data-number="2.0.4" class="anchored" data-anchor-id="building-permits-and-rates-of-change"><span class="header-section-number">2.0.4</span> Building Permits and Rates of Change</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>PATH <span class="ot">&lt;-</span> <span class="st">"data/Building Permits and Rates of Change.xls"</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>building_permits <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(PATH, <span class="at">range =</span> <span class="fu">cell_rows</span>(<span class="dv">24</span><span class="sc">:</span><span class="dv">105</span>), <span class="at">col_names =</span> <span class="fu">names</span>(<span class="fu">read_excel</span>(PATH, <span class="at">skip =</span> <span class="dv">2</span>))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `Bina sayısı Number of building` -&gt; `Bina sayısı Number of building...3`
+• `Yıllık değişim Annual change (%)` -&gt; `Yıllık değişim Annual change (%)...4`
+• `` -&gt; `...5`
+• `Daire sayısı Number of dwelling unit` -&gt; `Daire sayısı Number of dwelling
+  unit...6`
+• `Yıllık değişim Annual change (%)` -&gt; `Yıllık değişim Annual change (%)...7`
+• `` -&gt; `...8`
+• `Yüzölçüm Floor area (m²)` -&gt; `Yüzölçüm Floor area (m²)...9`
+• `Yıllık değişim Annual change (%)` -&gt; `Yıllık değişim Annual change (%)...10`
+• `` -&gt; `...11`
+• `Bina sayısı Number of building` -&gt; `Bina sayısı Number of building...12`
+• `Yıllık değişim Annual change (%)` -&gt; `Yıllık değişim Annual change (%)...13`
+• `` -&gt; `...14`
+• `Daire sayısı Number of dwelling unit` -&gt; `Daire sayısı Number of dwelling
+  unit...15`
+• `Yıllık değişim Annual change (%)` -&gt; `Yıllık değişim Annual change (%)...16`
+• `` -&gt; `...17`
+• `Yüzölçüm Floor area (m²)` -&gt; `Yüzölçüm Floor area (m²)...18`
+• `Yıllık değişim Annual change (%)` -&gt; `Yıllık değişim Annual change (%)...19`</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fill NA Values</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>building_permits <span class="ot">&lt;-</span> building_permits <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fill</span>(<span class="fu">colnames</span>(building_permits)[<span class="dv">1</span>], <span class="at">.direction =</span> <span class="st">"downup"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select_if</span>(<span class="sc">~</span> <span class="sc">!</span><span class="fu">all</span>(<span class="fu">is.na</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CP: Construction Permits</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># OP: Occupancy Permits</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(building_permits) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Year'</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'Quarter'</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - Number of Building'</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - NoB - Annual Change (%)'</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - Number of Dwelling Unit'</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - NoDU - Annual Change (%)'</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - Floor Area (m2)'</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'CP - Floor Area - Annual Change (%)'</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - Number of Building'</span>,</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - NoB - Annual Change (%)'</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - Number of Dwelling Unit'</span>,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - NoDU - Annual Change (%)'</span>,</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - Floor Area (m2)'</span>,</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'OP - Floor Area - Annual Change (%)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save building_permits as Building Permits and Rates of Change.rds</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(building_permits, <span class="at">file =</span> <span class="st">"Building Permits and Rates of Change.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restore the Building Permits and Rates of Change.RData</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">"Building Permits and Rates of Change.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 14
+   Year Quarter CP - N…¹ CP - …² CP - …³ CP - …⁴ CP - …⁵ CP - …⁶ OP - …⁷ OP - …⁸
+  &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;  
+1  2021 I          33622 137.30…  174741 116.3    3.44e7 95.099…   20979 12.800…
+2  2021 II         30537 55.5     157526 14.300…  3.18e7 15.699…   18511 27.699…
+3  2021 III        30451 20.199…  149415 5.9000…  3.33e7 19.600…   21954 4      
+4  2021 IV         43699 17.699…  239577 22.399…  5.13e7 29.100…   30738 29.899…
+5  2022 I          26168 -22.19…  128157 -26.69…  2.71e7 -21.19…   22481 7.2000…
+6  2022 II         28249 -7.5     133424 -15.30…  2.93e7 -7.799…   22691 22.600…
+# … with 4 more variables: `OP - Number of Dwelling Unit` &lt;dbl&gt;,
+#   `OP - NoDU - Annual Change (%)` &lt;chr&gt;, `OP - Floor Area (m2)` &lt;dbl&gt;,
+#   `OP - Floor Area - Annual Change (%)` &lt;chr&gt;, and abbreviated variable names
+#   ¹​`CP - Number of Building`, ²​`CP - NoB - Annual Change (%)`,
+#   ³​`CP - Number of Dwelling Unit`, ⁴​`CP - NoDU - Annual Change (%)`,
+#   ⁵​`CP - Floor Area (m2)`, ⁶​`CP - Floor Area - Annual Change (%)`,
+#   ⁷​`OP - Number of Building`, ⁸​`OP - NoB - Annual Change (%)`</code></pre>
 </div>
 </div>
 

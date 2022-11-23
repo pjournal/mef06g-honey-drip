@@ -8,24 +8,26 @@ date: "2022-11-22"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Preprocessing
 
 
-## Necessary libraries
-
-```{r}
+```{r, message = FALSE}
+# Required libraries
 library(tidyverse)
 library(dplyr)
 library(readxl)
 library(lubridate)
+library(tidyr)
 library(zoo)
+library(janitor)
+library(reactable)
+library(data.table)
 
 ```
 
-## PREPROCESS
+### Construction Cost Index (2015=100) and Rate of Change
 
 ```{r}
-"First part of cleaning data done in excel then I use Pivot longer Function"
+# First part of cleaning data done in excel then I use Pivot longer Function
 
 ConsIndex <- read_excel("data/Constructioncost.xls", 
                              sheet = "Index")
@@ -42,8 +44,11 @@ ConsAnnualChange$Month <- match(ConsAnnualChange$Month, month.name)
 ConsAnnualChange$index <- as.numeric(as.character(ConsAnnualChange$index))
 head(ConsAnnualChange)
 ```
+
+### House Sales by Type and State
+
 ```{r}
-"House Sales data was too dirty so I clean it up in excel"
+# House Sales data was too dirty so I clean it up in excel
 HousesalesYear <- read_excel("data/Housesales.xls", 
                                     sheet = "Year")
 
@@ -56,5 +61,66 @@ head(HousesalesMonth)
 ```
 
 
+### House Sales by Provinces
+
+```{r}
+PATH <- "data/House Sales by Provinces.xls"
+
+data_xl <- read_excel(PATH, range = cell_rows(14:129), col_names = names(read_excel(PATH, skip = 2))) 
+```
+
+```{r}
+# Save data_xl as House Sales by Provinces.rds
+saveRDS(data_xl, file = "House Sales by Provinces.rds")
+```
 
 
+```{r}
+# Restore the House Sales by Provinces.rds
+head(readRDS(file = "House Sales by Provinces.rds"))
+```
+
+### Building Permits and Rates of Change
+
+```{r}
+PATH <- "data/Building Permits and Rates of Change.xls"
+
+building_permits <- read_excel(PATH, range = cell_rows(24:105), col_names = names(read_excel(PATH, skip = 2))) 
+```
+
+```{r}
+# Fill NA Values
+building_permits <- building_permits %>% 
+    fill(colnames(building_permits)[1], .direction = "downup") %>%
+    select_if(~ !all(is.na(.)))
+```
+
+```{r}
+# CP: Construction Permits
+# OP: Occupancy Permits
+
+colnames(building_permits) <- c('Year',
+                                'Quarter',
+                                'CP - Number of Building',
+                                'CP - NoB - Annual Change (%)',
+                                'CP - Number of Dwelling Unit',
+                                'CP - NoDU - Annual Change (%)',
+                                'CP - Floor Area (m2)',
+                                'CP - Floor Area - Annual Change (%)',
+                                'OP - Number of Building',
+                                'OP - NoB - Annual Change (%)',
+                                'OP - Number of Dwelling Unit',
+                                'OP - NoDU - Annual Change (%)',
+                                'OP - Floor Area (m2)',
+                                'OP - Floor Area - Annual Change (%)')
+```
+
+```{r}
+# Save building_permits as Building Permits and Rates of Change.rds
+saveRDS(building_permits, file = "Building Permits and Rates of Change.rds")
+```
+
+```{r}
+# Restore the Building Permits and Rates of Change.RData
+tail(readRDS(file = "Building Permits and Rates of Change.rds"))
+```
