@@ -220,3 +220,15 @@ House_sales_to_foreigners_month <- read_excel("data/House sales to foreigners.xl
 sheet = "Month")
 View(House_sales_to_foreigners_month)
 head(House_sales_to_foreigners_month)
+library(readxl)
+HSBGAP_province <- read_excel("data/HSBGAP.xls",
+sheet = "GENDERS  & PROVINCES")
+View(HSBGAP_province)
+library(readxl)
+HSBGAP_year <- read_excel("data/HSBGAP.xls",
+sheet = "YEARS (TURKEY TOTAL)")
+View(HSBGAP_year)
+library(readxl)
+HSTFBN_nation <- read_excel("data/HSTFBN.xls",
+sheet = "FOREIGNERS BY NATIONALITIES")
+View(HSTFBN_nation)

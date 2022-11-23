@@ -204,6 +204,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#building-permits-and-rates-of-change" id="toc-building-permits-and-rates-of-change" class="nav-link" data-scroll-target="#building-permits-and-rates-of-change"><span class="toc-section-number">2.0.4</span>  Building Permits and Rates of Change</a></li>
   <li><a href="#house-sales-to-foreigners-by-year" id="toc-house-sales-to-foreigners-by-year" class="nav-link" data-scroll-target="#house-sales-to-foreigners-by-year"><span class="toc-section-number">2.0.5</span>  House sales to foreigners by year</a></li>
   <li><a href="#house-sales-to-foreigners-by-month" id="toc-house-sales-to-foreigners-by-month" class="nav-link" data-scroll-target="#house-sales-to-foreigners-by-month"><span class="toc-section-number">2.0.6</span>  House sales to foreigners by month</a></li>
+  <li><a href="#house-sales-by-gender" id="toc-house-sales-by-gender" class="nav-link" data-scroll-target="#house-sales-by-gender"><span class="toc-section-number">2.0.7</span>  House sales by gender</a></li>
   </ul>
 </nav>
     </div>
@@ -522,6 +523,75 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 4  2013 April     95381                   947       0.993
 5  2013 May      103261                   938       0.908
 6  2013 June      96424                   783       0.812</code></pre>
+</div>
+</div>
+</section>
+<section id="house-sales-by-gender" class="level3" data-number="2.0.7">
+<h3 data-number="2.0.7" class="anchored" data-anchor-id="house-sales-by-gender"><span class="header-section-number">2.0.7</span> House sales by gender</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>HSBGAP_province <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/HSBGAP.xls"</span>, </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">sheet =</span> <span class="st">"GENDERS  &amp; PROVINCES"</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(HSBGAP_province)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+   Year City           Total  Male Female JO    Other
+  &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+1  2014 Adana          20897 11809   6630 283    2175
+2  2014 Adiyaman        4480  3262    970 23      225
+3  2014 Afyonkarahisar  6260  3516   1790 590     364
+4  2014 Ağri            1347  1098    220 5        24
+5  2014 Aksaray         4397  2877   1280 93      147
+6  2014 Amasya          3994  2436   1044 62      452</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>HSBGAP_year <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/HSBGAP.xls"</span>, </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">sheet =</span> <span class="st">"YEARS (TURKEY TOTAL)"</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(HSBGAP_year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+   Year   Total   Male Female    JO  Other
+  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+1  2014 1165381 695727 343209 27919  98526
+2  2015 1289320 774874 382237 29708 102501
+3  2016 1341453 801048 391334 29088 119983
+4  2017 1409314 837928 409453 29178 132755
+5  2018 1375398 790006 421286 26877 137229
+6  2019 1348729 775653 420276 24141 128659</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>HSTFBN_nation <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/HSTFBN.xls"</span>, </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">sheet =</span> <span class="st">"FOREIGNERS BY NATIONALITIES"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>HSTFBN_nation <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(HSTFBN_nation,<span class="dv">4</span><span class="sc">:</span><span class="dv">15</span>,<span class="at">names_to =</span> <span class="st">"Month"</span>, <span class="at">values_to =</span> <span class="st">"sales"</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(HSTFBN_nation)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  `\nYear` `\nCountry` `\nTotal` Month        sales
+     &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;
+1     2015 Iraq             4228 "\nJanuary"    240
+2     2015 Iraq             4228 "\nFebruary"   243
+3     2015 Iraq             4228 "\nMarch"      297
+4     2015 Iraq             4228 "\nApril"      298
+5     2015 Iraq             4228 "\nMay"        276
+6     2015 Iraq             4228 "\nJune"       315</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>HSTFBN <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/HSTFBN.xls"</span>, <span class="at">sheet =</span> <span class="st">"TOTAL SALES BY YEARS"</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(HSTFBN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  `\nYear` `\nTotal`
+     &lt;dbl&gt;     &lt;dbl&gt;
+1     2015     22991
+2     2016     18391
+3     2017     22428
+4     2018     40044
+5     2019     45967
+6     2020     41298</code></pre>
 </div>
 </div>
 
