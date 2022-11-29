@@ -244,17 +244,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(zoo)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reactable)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="importing-data" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="importing-data"><span class="header-section-number">3.2</span> Importing data</h2>
 <p>We are importing construction cost index, Turnover rate, usd to tl exchange rate, House sales to foreigners data sets, ……………… .</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ConsIndex <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"~/GitHub/mef06g-honey-drip/Datards/ConsIndex.rds"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Turnover <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"~/GitHub/mef06g-honey-drip/Datards/Turnover.rds"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>House_sales_to_foreigners_month <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"~/GitHub/mef06g-honey-drip/Datards/House_sales_to_foreigners_month.rds"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>House_sales_to_foreigners_year <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"~/GitHub/mef06g-honey-drip/Datards/House_sales_to_foreigners_year.rds"</span>)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ConsIndex <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"Datards/ConsIndex.rds"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Turnover <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"Datards/Turnover.rds"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>House_sales_to_foreigners_month <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"Datards/House_sales_to_foreigners_month.rds"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>House_sales_to_foreigners_year <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"Datards/House_sales_to_foreigners_year.rds"</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>monthly_usd_to_try <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/monthly_usd_to_try.xls"</span>)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>monthly_usd_to_try<span class="sc">$</span>month <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(monthly_usd_to_try<span class="sc">$</span>month)</span>
@@ -307,8 +308,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"USD to TL Exchange rate"</span>)<span class="sc">+</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Xrate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
 <div class="cell-output-display">
 <p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>PATH <span class="ot">&lt;-</span> <span class="st">"data/House Sales by Provinces.xls"</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>house_sales_by_provinces <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(PATH, <span class="at">range =</span> <span class="fu">cell_rows</span>(<span class="dv">14</span><span class="sc">:</span><span class="dv">129</span>), <span class="at">col_names =</span> <span class="fu">names</span>(<span class="fu">read_excel</span>(PATH, <span class="at">skip =</span> <span class="dv">2</span>))) </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>house_sales_by_provinces  <span class="ot">&lt;-</span> house_sales_by_provinces  <span class="sc">%&gt;%</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fill</span>(<span class="fu">colnames</span>(house_sales_by_provinces[<span class="dv">1</span>]), <span class="at">.direction =</span> <span class="st">"downup"</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating Time Series Object</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>total_hs_ts <span class="ot">&lt;-</span> <span class="fu">ts</span>(house_sales_by_provinces[<span class="dv">3</span>],<span class="at">start=</span><span class="fu">c</span>(<span class="dv">2013</span>,<span class="dv">1</span>),<span class="at">frequency=</span><span class="dv">12</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repr.plot.width=</span><span class="dv">21</span>, <span class="at">repr.plot.height=</span><span class="dv">8</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(total_hs_ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>total_sales_by_year <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(house_sales_by_provinces[<span class="dv">3</span>], house_sales_by_provinces[<span class="dv">1</span>], <span class="at">FUN=</span>sum)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(total_sales_by_year) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Year'</span>,<span class="st">'Total'</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Total Sales by Year</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repr.plot.width=</span><span class="dv">18</span>, <span class="at">repr.plot.height=</span><span class="dv">8</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>total_sales_by_year, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">as.factor</span>(Year), <span class="at">y=</span>Total)) <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">fill=</span><span class="st">"steelblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Annual average house sales by provinces (except 2022)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>annual_avg_hs <span class="ot">&lt;-</span> <span class="fu">slice</span>(house_sales_by_provinces <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(house_sales_by_provinces[<span class="dv">1</span>]) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize_if</span>(is.numeric,sum,<span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span><span class="sc">:</span>(<span class="fu">n</span>()<span class="sc">-</span><span class="dv">1</span>))[<span class="dv">3</span><span class="sc">:</span><span class="dv">82</span>] <span class="sc">%&gt;%</span> </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize_if</span>(is.numeric,mean,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Annual average house sales by provinces (except 2022)</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">unlist</span>(annual_avg_hs), <span class="at">col =</span> <span class="fu">rainbow</span>(<span class="dv">100</span>), <span class="at">las=</span><span class="dv">2</span>, <span class="at">cex.names=</span>.<span class="dv">9</span>, <span class="at">horiz =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 

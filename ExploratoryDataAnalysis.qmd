@@ -17,16 +17,19 @@ library(zoo)
 library(janitor)
 library(reactable)
 library(data.table)
+library(ggplot2)
 ```
+
+
 
 ## Importing data
 
 We are importing construction cost index, Turnover rate, usd to tl exchange rate, House sales to foreigners data sets, .................. .
 ```{r}
-ConsIndex <- readRDS("~/GitHub/mef06g-honey-drip/Datards/ConsIndex.rds")
-Turnover <- readRDS("~/GitHub/mef06g-honey-drip/Datards/Turnover.rds")
-House_sales_to_foreigners_month <- readRDS("~/GitHub/mef06g-honey-drip/Datards/House_sales_to_foreigners_month.rds")
-House_sales_to_foreigners_year <- readRDS("~/GitHub/mef06g-honey-drip/Datards/House_sales_to_foreigners_year.rds")
+ConsIndex <- readRDS("Datards/ConsIndex.rds")
+Turnover <- readRDS("Datards/Turnover.rds")
+House_sales_to_foreigners_month <- readRDS("Datards/House_sales_to_foreigners_month.rds")
+House_sales_to_foreigners_year <- readRDS("Datards/House_sales_to_foreigners_year.rds")
 
 monthly_usd_to_try <- read_excel("data/monthly_usd_to_try.xls")
 monthly_usd_to_try$month <- as.Date(monthly_usd_to_try$month)
@@ -70,4 +73,43 @@ ggplot(monthly_usd_to_try, aes(x = `month`, y = `usd_rate`, group = 1)) +
 
 
 
+```
+
+
+```{r}
+PATH <- "data/House Sales by Provinces.xls"
+
+house_sales_by_provinces <- read_excel(PATH, range = cell_rows(14:129), col_names = names(read_excel(PATH, skip = 2))) 
+
+house_sales_by_provinces  <- house_sales_by_provinces  %>%
+    fill(colnames(house_sales_by_provinces[1]), .direction = "downup")
+
+# Creating Time Series Object
+total_hs_ts <- ts(house_sales_by_provinces[3],start=c(2013,1),frequency=12)
+
+options(repr.plot.width=21, repr.plot.height=8)
+plot(total_hs_ts)
+```
+
+
+```{r}
+total_sales_by_year <- aggregate(house_sales_by_provinces[3], house_sales_by_provinces[1], FUN=sum)
+colnames(total_sales_by_year) <- c('Year','Total')
+
+# Total Sales by Year
+options(repr.plot.width=18, repr.plot.height=8)
+ggplot(data=total_sales_by_year, aes(x=as.factor(Year), y=Total)) +
+    geom_bar(stat="identity", fill="steelblue")
+```
+
+```{r fig.height = 15}
+# Annual average house sales by provinces (except 2022)
+annual_avg_hs <- slice(house_sales_by_provinces %>% 
+    group_by(house_sales_by_provinces[1]) %>% 
+    summarize_if(is.numeric,sum,na.rm = TRUE), 1:(n()-1))[3:82] %>% 
+    summarize_if(is.numeric,mean,na.rm = TRUE)
+
+# Annual average house sales by provinces (except 2022)
+
+barplot(unlist(annual_avg_hs), col = rainbow(100), las=2, cex.names=.9, horiz = TRUE)
 ```
