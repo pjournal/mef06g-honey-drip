@@ -98,24 +98,95 @@ plot(total_hs_ts)
 
 
 ```{r}
+# Monthly usd to try graph
+monthly_usd_to_try <- read_excel("data/monthly_usd_to_try.xls")
 
-colnames(total_sales_by_year) <- c('Year','Total')
+# Monhtly usd rate preprocessing
+monthly_usd_to_try$month <- as.Date(monthly_usd_to_try$month)
+colnames(monthly_usd_to_try) <- c("date","value")
 
-# Total Sales by Year
-options(repr.plot.width=18, repr.plot.height=8)
-ggplot(data=total_sales_by_year, aes(x=as.factor(Year), y=Total)) +
-    geom_bar(stat="identity", fill="steelblue")
+ggplot(data=monthly_usd_to_try, aes(x=date, y=value, group=1)) +
+  geom_line()+
+  geom_point()
 ```
 
-```{r fig.height = 15, fig.width = 8}
-# Annual average house sales by provinces (except 2022)
-annual_avg_hs <- slice(house_sales_by_provinces %>% 
-    group_by(house_sales_by_provinces[1]) %>% 
-    summarize_if(is.numeric,sum,na.rm = TRUE), 1:(n()-1))[3:82] %>% 
-    summarize_if(is.numeric,mean,na.rm = TRUE)
 
-# Annual average house sales by provinces (except 2022)
 
-barplot(unlist(annual_avg_hs), col = rainbow(100), las=2, cex.names=.6, horiz = TRUE)
 
+```{r}
+# Monthly cost index
+construction_cost_index <- read_excel("data/construction_cost_index_by_industries_and_cost_groups_preprocessed.xls")
+
+# Monhtly cost index preprocessing
+construction_cost_index$date <- as.Date(construction_cost_index$date)
+colnames(construction_cost_index) <- c("date","cost_type","value","material","labour")
+
+cost_index = construction_cost_index %>% 
+  filter(cost_type=="construction") %>%
+  group_by(date) %>%
+  summarize(value=sum(value))
+
+# There are significant relationship between USD/TRY Rate and Cost Index
+ggplot(data=cost_index, aes(x=date, y=value, group=1)) +
+  geom_line()+
+  geom_point()
 ```
+
+
+
+
+```{r}
+# Yillik satista ulkeler
+library(readxl)
+HSTFBN <- read_excel("data/HSTFBN.xls", sheet = "FOREIGNERS BY NATIONALITIES")
+
+total_sale_by_country <- HSTFBN %>% group_by(year,country) %>% summarise(sum=sum(total))
+
+
+# 2017'den sonra Iran, Irak'i geciyor.
+# 2021'den 2022'ye gecerken rusya da yuksek bir artis var.
+
+ggplot(data=total_sale_by_country,aes(x=year,y=sum,fill=country)) +
+  geom_bar(stat="identity",position = "dodge")
+```
+
+
+
+
+```{r}
+house_sales_by_districts_preprocessed <- read_excel("data/house_sales_by_districts_preprocessed.xls")
+
+house_sales <- house_sales_by_districts_preprocessed %>%
+  group_by(year) %>%
+  summarise(morgaged=sum(mortgaged), total=sum(total), first_hand=sum(first_hand), second_hand=sum(second_hand))
+
+
+ggplot(data=house_sales,aes(x=year),group = 1 ) +
+  geom_line(aes(y=morgaged,color='morgaged')) +
+  geom_line(aes(y=total,color='total'))+
+  xlab("Year")+
+  ylab("Values")
+```
+
+
+
+
+```{r}
+house_sales_by_districts_preprocessed <- read_excel("data/house_sales_by_districts_preprocessed.xls")
+
+house_sales <- house_sales_by_districts_preprocessed %>%
+  group_by(year) %>%
+  summarise(morgaged=sum(mortgaged), total=sum(total), first_hand=sum(first_hand), second_hand=sum(second_hand))
+
+
+ggplot(data=house_sales,aes(x=year),group = 1 ) +
+  geom_line(aes(y=first_hand,color='first_hand')) +
+  geom_line(aes(y=second_hand,color='second_hand')) +
+  xlab("Year")+
+  ylab("Values")
+```
+
+
+
+
+
