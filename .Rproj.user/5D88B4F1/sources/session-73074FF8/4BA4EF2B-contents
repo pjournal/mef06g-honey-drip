@@ -1,0 +1,117 @@
+
+library(tidyverse)
+library(dplyr)
+library(readxl)
+library(lubridate)
+library(tidyr)
+library(zoo)
+library(janitor)
+library(reactable)
+library(data.table)
+
+ConsIndex <- read_excel("data/Constructioncost.xls", 
+                        sheet = "Index")
+ConsIndex <- pivot_longer(ConsIndex,2:13,names_to = "Month", values_to = "index")
+head(ConsIndex) 
+saveRDS(ConsIndex, file = "ConsIndex.rds")
+
+ConsAnnualChange <- read_excel("data/Constructioncost.xls", 
+                               sheet = "Rate")
+ConsAnnualChange <- pivot_longer(ConsAnnualChange,2:13,names_to = "Month", values_to = "index")
+ConsAnnualChange$index <- as.numeric(as.character(ConsAnnualChange$index))
+saveRDS(ConsAnnualChange, file = "ConsAnnualChange.rds")
+head(ConsAnnualChange)
+
+
+House_sales_to_foreigners_year <- read_excel("data/House sales to foreigners.xls", 
+                                             sheet = "Year")
+head(House_sales_to_foreigners_year)
+saveRDS(House_sales_to_foreigners_year, file = "House_sales_to_foreigners_year.rds")
+
+ggplot(House_sales_to_foreigners_year, aes(Year)) + 
+  geom_line(aes(y = Total, colour = "Total")) + 
+  geom_line(aes(y = `Sales to foreigners`, colour = "Sales To Foreigners"))
+
+ConsIndexYear <- ConsIndex %>% group_by(Year) %>% summarise(mean = mean(index))
+
+Yearplot <- House_sales_to_foreigners_year %>% left_join(ConsIndexYear, by = "Year")
+
+ggplot(Yearplot, aes(Year)) + 
+  geom_line(aes(y = Total, colour = "Total")) + 
+  geom_line(aes(y = `Sales to foreigners`, colour = "Sales To Foreigners")) + 
+  geom_line(aes(y = `mean`, colour = "Cost Index Mean"))
+
+HousesalesYear <- read_excel("data/Housesales.xls", 
+                             sheet = "Year")
+
+head(HousesalesYear) 
+
+HousesalesMonth <- read_excel("data/Housesales.xls", 
+                              sheet = "Month")
+head(HousesalesMonth) 
+
+ggplot(Yearplot, aes(Year)) +
+  geom_line(aes(y = `mean`, colour = "Cost Index Mean"))
+
+ggplot(Yearplot, aes(Year)) +
+  geom_line(aes(y = `Sales to foreigners`, colour = "Sales To Foreigners"))
+
+ggplot(Yearplot, aes(Year)) +
+  geom_line(aes(y = Total, colour = "Total"))
+
+
+Turnover <- read_excel("eda/ciro endeksi.xls", 
+                            sheet = "Turnover")
+View(Turnover)
+ConsIndex$Month <- match(ConsIndex$Month, month.name)
+
+House_sales_to_foreigners_month <- read_excel("eda/House sales to foreigners.xls", 
+                                                   sheet = "Month")
+View(House_sales_to_foreigners_month)
+
+Turnover
+TurnoverYear <- Turnover %>% group_by(Year) %>% summarise(Turnover_mean = mean(`seasonal and calendar adjusted
+Index`))
+
+
+House_sales_to_foreigners_year
+ConsIndex
+
+ConsIndexYear <- ConsIndex %>% group_by(Year) %>% summarise(ConsIndex_mean = mean(index))
+
+House_sales_to_foreigners_month 
+
+CostIndex_Sectors <- read_excel("eda/Sektörlere ve maliyet gruplarına göre inşaat maliyet endeksi.xls", 
+                                     sheet = "Sheet1")
+ View(CostIndex_Sectors)
+
+
+ 
+TurnoverYear
+House_sales_to_foreigners_year
+ConsIndexYear
+
+str(ConsIndexYear)
+
+`House Sales by Provinces`
+
+
+
+class(monthly_usd_to_try$month)
+
+monthly_usd_to_try$month <- as.Date(monthly_usd_to_try$month)
+monthly_usd_to_try$month <- format(monthly_usd_to_try$month,"%Y-%b-%d")
+
+
+monthly_usd_to_try <- read_excel("data/monthly_usd_to_try.xls")
+
+
+
+ggplot(monthly_usd_to_try, aes(x = `month`, y = `usd_rate`, group = 1)) +
+  geom_line(linetype="solid", color="red", size=2) +
+  scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+
+ labs(title="USD to TL Exchange rate")+
+  xlab("Year") +
+  ylab("Xrate")
+
+ 

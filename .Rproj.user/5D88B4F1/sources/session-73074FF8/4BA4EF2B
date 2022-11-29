@@ -1,27 +1,26 @@
 {
-    "id": "E4BC6165",
-    "path": null,
+    "id": "4BA4EF2B",
+    "path": "C:/Users/USER/Desktop/egzersizler/egzersiz2.R",
     "project_path": null,
     "type": "r_source",
-    "hash": "3064894496",
+    "hash": "3987446639",
     "contents": "",
-    "dirty": true,
-    "created": 1669574413430.0,
+    "dirty": false,
+    "created": 1669731665209.0,
     "source_on_save": false,
     "relative_order": 1,
     "properties": {
-        "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "0,17",
-        "scrollLine": "0"
+        "cursorPosition": "109,0",
+        "scrollLine": "85"
     },
     "folds": "",
-    "lastKnownWriteTime": 7575666048509504617,
-    "encoding": "",
+    "lastKnownWriteTime": 1669736208,
+    "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1669574446512,
+    "last_content_update": 1669736208666,
     "read_only": false,
     "read_only_alternatives": []
 }
