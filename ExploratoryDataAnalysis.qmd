@@ -189,14 +189,14 @@ ggplot(data=house_sales,aes(x=year),group = 1 ) +
 
 ```{r}
 # Monthly usd to try graph
-monthly_usd_to_try <- read_excel("~/Work/mef06g-honey-drip/data/monthly_usd_to_try.xls")
+monthly_usd_to_try <- read_excel("data/monthly_usd_to_try.xls")
 
 # Monhtly usd rate preprocessing
 monthly_usd_to_try$month <- as.Date(monthly_usd_to_try$month)
 colnames(monthly_usd_to_try) <- c("date","value")
 
 # Monthly cost index
-construction_cost_index <- read_excel("~/Work/mef06g-honey-drip/data/construction_cost_index_by_industries_and_cost_groups_preprocessed.xls")
+construction_cost_index <- read_excel("data/construction_cost_index_by_industries_and_cost_groups_preprocessed.xls")
 
 # Monhtly cost index preprocessing
 construction_cost_index$date <- as.Date(construction_cost_index$date)
@@ -212,7 +212,7 @@ ggplot(data=cost_index, aes(x=date, y=value, group=1)) +
   geom_line()+
   geom_point()
 
-ggplot(data=usd_rate, aes(x=date, y=value, group=1)) +
+ggplot(data=monthly_usd_to_try, aes(x=date, y=value, group=1)) +
   geom_line()+
   geom_point()
 ```
