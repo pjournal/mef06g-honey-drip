@@ -24,7 +24,7 @@ library(ggplot2)
 
 ## Importing data
 
-We are importing construction cost index, Turnover rate, usd to tl exchange rate, House sales to foreigners data sets, .................. .
+We are importing construction cost index, Turnover rate, usd to tl exchange rate, House sales to foreigners, House Sales by Province data sets.
 ```{r}
 ConsIndex <- readRDS("Datards/ConsIndex.rds")
 Turnover <- readRDS("Datards/Turnover.rds")
@@ -47,8 +47,14 @@ House_sales_to_foreigners_month$Month <- match(House_sales_to_foreigners_month$M
 House_sales_to_foreigners_month$Date <- as.yearmon(paste(House_sales_to_foreigners_month$Year, House_sales_to_foreigners_month$Month), "%Y %m")
 
 ```
+## Key Takeaways
+1. When we examine the sales data, although the rate of sales to foreigners has increased over the years, it has remained around 5 percent. Considering this information, it seems difficult for the sale to foreigners to have a significant impact on the market.
+2. After 2019, we can see that the annual average cost index exceeds the annual average turnover index.
+3. When we examine the relationship between the dollar and TL exchange rate, we conclude that the TL has experienced a high depreciation against the dollar. And we observe that there is a clear correlation between the cost index and the dollar-tl exchange rate relationship.
 
 
+
+### Total sales with Sales To Foreigners and Sales To Foreigners Share (%)
 ```{r}
 ggplot(House_sales_to_foreigners_month, aes(Date)) + 
   geom_line(aes(y = Total, colour = "Total")) + 
@@ -57,9 +63,11 @@ ggplot(House_sales_to_foreigners_month, aes(Date)) +
 ggplot(House_sales_to_foreigners_month, aes(Date)) + 
   geom_line(aes(y = `Share (%)`, colour = "Share (%)"))
 
+```
 
+Finding construction cost index yearly mean to compare
 
-"Finding construction cost index yearly mean to compare"
+```{r}
 ConsIndexYear <- ConsIndex %>% group_by(Year) %>% summarise(Construction_cost_mean = mean(index, na.rm = TRUE))
 TurnoverYear <- Turnover %>% group_by(Year) %>% summarise(Turnover_mean = mean(`seasonal and calendar adjusted
 Index`))
@@ -70,16 +78,6 @@ ConsIndexYear %>% left_join(TurnoverYear, by = "Year") %>% ggplot(aes(Year)) +
   labs(title="Construction cost and Turnover index yearly mean comparison")+
   xlab("Year") +
   ylab("Index")
-
-
-"USD to TL Exchange rate"
-ggplot(monthly_usd_to_try, aes(x = `month`, y = `usd_rate`, group = 1)) +
-  geom_line(linetype="solid", color="red", size=2) +
-  scale_x_discrete(guide = guide_axis(check.overlap = TRUE))+
- labs(title="USD to TL Exchange rate")+
-  xlab("Year") +
-  ylab("Xrate")
-
 
 
 ```
@@ -96,12 +94,12 @@ options(repr.plot.width=21, repr.plot.height=8)
 plot(total_hs_ts)
 ```
 
+### Monthly usd to try graph and  Monhtly usd rate preprocessing
 
 ```{r}
-# Monthly usd to try graph
+
 monthly_usd_to_try <- read_excel("data/monthly_usd_to_try.xls")
 
-# Monhtly usd rate preprocessing
 monthly_usd_to_try$month <- as.Date(monthly_usd_to_try$month)
 colnames(monthly_usd_to_try) <- c("date","value")
 
@@ -111,13 +109,13 @@ ggplot(data=monthly_usd_to_try, aes(x=date, y=value, group=1)) +
 ```
 
 
-
+### Monthly cost index and  Monhtly cost index preprocessing
 
 ```{r}
-# Monthly cost index
+
 construction_cost_index <- read_excel("data/construction_cost_index_by_industries_and_cost_groups_preprocessed.xls")
 
-# Monhtly cost index preprocessing
+
 construction_cost_index$date <- as.Date(construction_cost_index$date)
 colnames(construction_cost_index) <- c("date","cost_type","value","material","labour")
 
@@ -126,7 +124,6 @@ cost_index = construction_cost_index %>%
   group_by(date) %>%
   summarize(value=sum(value))
 
-# There are significant relationship between USD/TRY Rate and Cost Index
 ggplot(data=cost_index, aes(x=date, y=value, group=1)) +
   geom_line()+
   geom_point()
@@ -187,33 +184,5 @@ ggplot(data=house_sales,aes(x=year),group = 1 ) +
 ```
 
 
-```{r}
-# Monthly usd to try graph
-monthly_usd_to_try <- read_excel("data/monthly_usd_to_try.xls")
 
-# Monhtly usd rate preprocessing
-monthly_usd_to_try$month <- as.Date(monthly_usd_to_try$month)
-colnames(monthly_usd_to_try) <- c("date","value")
-
-# Monthly cost index
-construction_cost_index <- read_excel("data/construction_cost_index_by_industries_and_cost_groups_preprocessed.xls")
-
-# Monhtly cost index preprocessing
-construction_cost_index$date <- as.Date(construction_cost_index$date)
-colnames(construction_cost_index) <- c("date","cost_type","value","material","labour")
-
-cost_index = construction_cost_index %>% 
-  filter(cost_type=="construction") %>%
-  group_by(date) %>%
-  summarize(value=sum(value))
-
-# There are significant relationship between USD/TRY Rate and Cost Index
-ggplot(data=cost_index, aes(x=date, y=value, group=1)) +
-  geom_line()+
-  geom_point()
-
-ggplot(data=monthly_usd_to_try, aes(x=date, y=value, group=1)) +
-  geom_line()+
-  geom_point()
-```
 

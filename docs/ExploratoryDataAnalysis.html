@@ -205,6 +205,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#necessary-libraries" id="toc-necessary-libraries" class="nav-link active" data-scroll-target="#necessary-libraries"><span class="toc-section-number">3.1</span>  Necessary libraries</a></li>
   <li><a href="#importing-data" id="toc-importing-data" class="nav-link" data-scroll-target="#importing-data"><span class="toc-section-number">3.2</span>  Importing data</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways"><span class="toc-section-number">3.3</span>  Key Takeaways</a>
+  <ul class="collapse">
+  <li><a href="#total-sales-with-sales-to-foreigners-and-sales-to-foreigners-share" id="toc-total-sales-with-sales-to-foreigners-and-sales-to-foreigners-share" class="nav-link" data-scroll-target="#total-sales-with-sales-to-foreigners-and-sales-to-foreigners-share"><span class="toc-section-number">3.3.1</span>  Total sales with Sales To Foreigners and Sales To Foreigners Share (%)</a></li>
+  <li><a href="#monthly-usd-to-try-graph-and-monhtly-usd-rate-preprocessing" id="toc-monthly-usd-to-try-graph-and-monhtly-usd-rate-preprocessing" class="nav-link" data-scroll-target="#monthly-usd-to-try-graph-and-monhtly-usd-rate-preprocessing"><span class="toc-section-number">3.3.2</span>  Monthly usd to try graph and Monhtly usd rate preprocessing</a></li>
+  <li><a href="#monthly-cost-index-and-monhtly-cost-index-preprocessing" id="toc-monthly-cost-index-and-monhtly-cost-index-preprocessing" class="nav-link" data-scroll-target="#monthly-cost-index-and-monhtly-cost-index-preprocessing"><span class="toc-section-number">3.3.3</span>  Monthly cost index and Monhtly cost index preprocessing</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -250,7 +256,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="importing-data" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="importing-data"><span class="header-section-number">3.2</span> Importing data</h2>
-<p>We are importing construction cost index, Turnover rate, usd to tl exchange rate, House sales to foreigners data sets, ……………… .</p>
+<p>We are importing construction cost index, Turnover rate, usd to tl exchange rate, House sales to foreigners, House Sales by Province data sets.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ConsIndex <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"Datards/ConsIndex.rds"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Turnover <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"Datards/Turnover.rds"</span>)</span>
@@ -272,6 +278,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>House_sales_to_foreigners_month<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">as.yearmon</span>(<span class="fu">paste</span>(House_sales_to_foreigners_month<span class="sc">$</span>Year, House_sales_to_foreigners_month<span class="sc">$</span>Month), <span class="st">"%Y %m"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="key-takeaways" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="key-takeaways"><span class="header-section-number">3.3</span> Key Takeaways</h2>
+<ol type="1">
+<li>When we examine the sales data, although the rate of sales to foreigners has increased over the years, it has remained around 5 percent. Considering this information, it seems difficult for the sale to foreigners to have a significant impact on the market.</li>
+<li>After 2019, we can see that the annual average cost index exceeds the annual average turnover index.</li>
+<li>When we examine the relationship between the dollar and TL exchange rate, we conclude that the TL has experienced a high depreciation against the dollar. And we observe that there is a clear correlation between the cost index and the dollar-tl exchange rate relationship.</li>
+</ol>
+<section id="total-sales-with-sales-to-foreigners-and-sales-to-foreigners-share" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="total-sales-with-sales-to-foreigners-and-sales-to-foreigners-share"><span class="header-section-number">3.3.1</span> Total sales with Sales To Foreigners and Sales To Foreigners Share (%)</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(House_sales_to_foreigners_month, <span class="fu">aes</span>(Date)) <span class="sc">+</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Total, <span class="at">colour =</span> <span class="st">"Total"</span>)) <span class="sc">+</span> </span>
@@ -284,175 +300,130 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell-output-display">
 <p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="st">"Finding construction cost index yearly mean to compare"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Finding construction cost index yearly mean to compare"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ConsIndexYear <span class="ot">&lt;-</span> ConsIndex <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Construction_cost_mean =</span> <span class="fu">mean</span>(index, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>TurnoverYear <span class="ot">&lt;-</span> Turnover <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Turnover_mean =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">seasonal and calendar adjusted</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">Index</span><span class="st">`</span>))</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ConsIndexYear <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(TurnoverYear, <span class="at">by =</span> <span class="st">"Year"</span>) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Year)) <span class="sc">+</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Construction_cost_mean, <span class="at">colour =</span> <span class="st">"Construction cost mean"</span>)) <span class="sc">+</span> </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Turnover_mean, <span class="at">colour =</span> <span class="st">"Turnover mean"</span>))<span class="sc">+</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Construction cost and Turnover index yearly mean comparison"</span>)<span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Index"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="st">"USD to TL Exchange rate"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "USD to TL Exchange rate"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(monthly_usd_to_try, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">month</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">usd_rate</span><span class="st">`</span>, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linetype=</span><span class="st">"solid"</span>, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">size=</span><span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">guide =</span> <span class="fu">guide_axis</span>(<span class="at">check.overlap =</span> <span class="cn">TRUE</span>))<span class="sc">+</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"USD to TL Exchange rate"</span>)<span class="sc">+</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Xrate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-3-4.png" class="img-fluid" width="672"></p>
-</div>
-</div>
+<p>Finding construction cost index yearly mean to compare</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>house_sales_by_provinces  <span class="ot">&lt;-</span> house_sales_by_provinces  <span class="sc">%&gt;%</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fill</span>(<span class="fu">colnames</span>(house_sales_by_provinces[<span class="dv">1</span>]), <span class="at">.direction =</span> <span class="st">"downup"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating Time Series Object for House Sales by Proviences</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>total_hs_ts <span class="ot">&lt;-</span> <span class="fu">ts</span>(house_sales_by_provinces[<span class="dv">3</span>],<span class="at">start=</span><span class="fu">c</span>(<span class="dv">2013</span>,<span class="dv">1</span>),<span class="at">frequency=</span><span class="dv">12</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repr.plot.width=</span><span class="dv">21</span>, <span class="at">repr.plot.height=</span><span class="dv">8</span>)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(total_hs_ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ConsIndexYear <span class="ot">&lt;-</span> ConsIndex <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Construction_cost_mean =</span> <span class="fu">mean</span>(index, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>TurnoverYear <span class="ot">&lt;-</span> Turnover <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Turnover_mean =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">seasonal and calendar adjusted</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">Index</span><span class="st">`</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>ConsIndexYear <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(TurnoverYear, <span class="at">by =</span> <span class="st">"Year"</span>) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(Year)) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Construction_cost_mean, <span class="at">colour =</span> <span class="st">"Construction cost mean"</span>)) <span class="sc">+</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Turnover_mean, <span class="at">colour =</span> <span class="st">"Turnover mean"</span>))<span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Construction cost and Turnover index yearly mean comparison"</span>)<span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Index"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monthly usd to try graph</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>monthly_usd_to_try <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/monthly_usd_to_try.xls"</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Monhtly usd rate preprocessing</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>monthly_usd_to_try<span class="sc">$</span>month <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(monthly_usd_to_try<span class="sc">$</span>month)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(monthly_usd_to_try) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"date"</span>,<span class="st">"value"</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>monthly_usd_to_try, <span class="fu">aes</span>(<span class="at">x=</span>date, <span class="at">y=</span>value, <span class="at">group=</span><span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>house_sales_by_provinces  <span class="ot">&lt;-</span> house_sales_by_provinces  <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fill</span>(<span class="fu">colnames</span>(house_sales_by_provinces[<span class="dv">1</span>]), <span class="at">.direction =</span> <span class="st">"downup"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating Time Series Object for House Sales by Proviences</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>total_hs_ts <span class="ot">&lt;-</span> <span class="fu">ts</span>(house_sales_by_provinces[<span class="dv">3</span>],<span class="at">start=</span><span class="fu">c</span>(<span class="dv">2013</span>,<span class="dv">1</span>),<span class="at">frequency=</span><span class="dv">12</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repr.plot.width=</span><span class="dv">21</span>, <span class="at">repr.plot.height=</span><span class="dv">8</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(total_hs_ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section>
+<section id="monthly-usd-to-try-graph-and-monhtly-usd-rate-preprocessing" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="monthly-usd-to-try-graph-and-monhtly-usd-rate-preprocessing"><span class="header-section-number">3.3.2</span> Monthly usd to try graph and Monhtly usd rate preprocessing</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monthly cost index</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>construction_cost_index <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/construction_cost_index_by_industries_and_cost_groups_preprocessed.xls"</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Monhtly cost index preprocessing</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>construction_cost_index<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(construction_cost_index<span class="sc">$</span>date)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(construction_cost_index) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"date"</span>,<span class="st">"cost_type"</span>,<span class="st">"value"</span>,<span class="st">"material"</span>,<span class="st">"labour"</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>cost_index <span class="ot">=</span> construction_cost_index <span class="sc">%&gt;%</span> </span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cost_type<span class="sc">==</span><span class="st">"construction"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date) <span class="sc">%&gt;%</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">value=</span><span class="fu">sum</span>(value))</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># There are significant relationship between USD/TRY Rate and Cost Index</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cost_index, <span class="fu">aes</span>(<span class="at">x=</span>date, <span class="at">y=</span>value, <span class="at">group=</span><span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>monthly_usd_to_try <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/monthly_usd_to_try.xls"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>monthly_usd_to_try<span class="sc">$</span>month <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(monthly_usd_to_try<span class="sc">$</span>month)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(monthly_usd_to_try) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"date"</span>,<span class="st">"value"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>monthly_usd_to_try, <span class="fu">aes</span>(<span class="at">x=</span>date, <span class="at">y=</span>value, <span class="at">group=</span><span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section>
+<section id="monthly-cost-index-and-monhtly-cost-index-preprocessing" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="monthly-cost-index-and-monhtly-cost-index-preprocessing"><span class="header-section-number">3.3.3</span> Monthly cost index and Monhtly cost index preprocessing</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Yillik satista ulkeler</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>HSTFBN <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/HSTFBN.xls"</span>, <span class="at">sheet =</span> <span class="st">"FOREIGNERS BY NATIONALITIES"</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>total_sale_by_country <span class="ot">&lt;-</span> HSTFBN <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year,country) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">sum=</span><span class="fu">sum</span>(total))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'year'. You can override using the
-`.groups` argument.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2017'den sonra Iran, Irak'i geciyor.</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2021'den 2022'ye gecerken rusya da yuksek bir artis var.</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>total_sale_by_country,<span class="fu">aes</span>(<span class="at">x=</span>year,<span class="at">y=</span>sum,<span class="at">fill=</span>country)) <span class="sc">+</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>,<span class="at">position =</span> <span class="st">"dodge"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>construction_cost_index <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/construction_cost_index_by_industries_and_cost_groups_preprocessed.xls"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>construction_cost_index<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(construction_cost_index<span class="sc">$</span>date)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(construction_cost_index) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"date"</span>,<span class="st">"cost_type"</span>,<span class="st">"value"</span>,<span class="st">"material"</span>,<span class="st">"labour"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>cost_index <span class="ot">=</span> construction_cost_index <span class="sc">%&gt;%</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cost_type<span class="sc">==</span><span class="st">"construction"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date) <span class="sc">%&gt;%</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">value=</span><span class="fu">sum</span>(value))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cost_index, <span class="fu">aes</span>(<span class="at">x=</span>date, <span class="at">y=</span>value, <span class="at">group=</span><span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>house_sales_by_districts_preprocessed <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/house_sales_by_districts_preprocessed.xls"</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>house_sales <span class="ot">&lt;-</span> house_sales_by_districts_preprocessed <span class="sc">%&gt;%</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">morgaged=</span><span class="fu">sum</span>(mortgaged), <span class="at">total=</span><span class="fu">sum</span>(total), <span class="at">first_hand=</span><span class="fu">sum</span>(first_hand), <span class="at">second_hand=</span><span class="fu">sum</span>(second_hand))</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>house_sales,<span class="fu">aes</span>(<span class="at">x=</span>year),<span class="at">group =</span> <span class="dv">1</span> ) <span class="sc">+</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>morgaged,<span class="at">color=</span><span class="st">'morgaged'</span>)) <span class="sc">+</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>total,<span class="at">color=</span><span class="st">'total'</span>))<span class="sc">+</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Year"</span>)<span class="sc">+</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Values"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Yillik satista ulkeler</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>HSTFBN <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/HSTFBN.xls"</span>, <span class="at">sheet =</span> <span class="st">"FOREIGNERS BY NATIONALITIES"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>total_sale_by_country <span class="ot">&lt;-</span> HSTFBN <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year,country) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">sum=</span><span class="fu">sum</span>(total))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'year'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2017'den sonra Iran, Irak'i geciyor.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2021'den 2022'ye gecerken rusya da yuksek bir artis var.</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>total_sale_by_country,<span class="fu">aes</span>(<span class="at">x=</span>year,<span class="at">y=</span>sum,<span class="at">fill=</span>country)) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>,<span class="at">position =</span> <span class="st">"dodge"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>house_sales_by_districts_preprocessed <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/house_sales_by_districts_preprocessed.xls"</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>house_sales <span class="ot">&lt;-</span> house_sales_by_districts_preprocessed <span class="sc">%&gt;%</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">morgaged=</span><span class="fu">sum</span>(mortgaged), <span class="at">total=</span><span class="fu">sum</span>(total), <span class="at">first_hand=</span><span class="fu">sum</span>(first_hand), <span class="at">second_hand=</span><span class="fu">sum</span>(second_hand))</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>house_sales,<span class="fu">aes</span>(<span class="at">x=</span>year),<span class="at">group =</span> <span class="dv">1</span> ) <span class="sc">+</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>first_hand,<span class="at">color=</span><span class="st">'first_hand'</span>)) <span class="sc">+</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>second_hand,<span class="at">color=</span><span class="st">'second_hand'</span>)) <span class="sc">+</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Year"</span>)<span class="sc">+</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Values"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>house_sales_by_districts_preprocessed <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/house_sales_by_districts_preprocessed.xls"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>house_sales <span class="ot">&lt;-</span> house_sales_by_districts_preprocessed <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">morgaged=</span><span class="fu">sum</span>(mortgaged), <span class="at">total=</span><span class="fu">sum</span>(total), <span class="at">first_hand=</span><span class="fu">sum</span>(first_hand), <span class="at">second_hand=</span><span class="fu">sum</span>(second_hand))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>house_sales,<span class="fu">aes</span>(<span class="at">x=</span>year),<span class="at">group =</span> <span class="dv">1</span> ) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>morgaged,<span class="at">color=</span><span class="st">'morgaged'</span>)) <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>total,<span class="at">color=</span><span class="st">'total'</span>))<span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Year"</span>)<span class="sc">+</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Values"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monthly usd to try graph</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>monthly_usd_to_try <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/monthly_usd_to_try.xls"</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Monhtly usd rate preprocessing</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>monthly_usd_to_try<span class="sc">$</span>month <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(monthly_usd_to_try<span class="sc">$</span>month)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(monthly_usd_to_try) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"date"</span>,<span class="st">"value"</span>)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Monthly cost index</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>construction_cost_index <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/construction_cost_index_by_industries_and_cost_groups_preprocessed.xls"</span>)</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Monhtly cost index preprocessing</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>construction_cost_index<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(construction_cost_index<span class="sc">$</span>date)</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(construction_cost_index) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"date"</span>,<span class="st">"cost_type"</span>,<span class="st">"value"</span>,<span class="st">"material"</span>,<span class="st">"labour"</span>)</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>cost_index <span class="ot">=</span> construction_cost_index <span class="sc">%&gt;%</span> </span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cost_type<span class="sc">==</span><span class="st">"construction"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date) <span class="sc">%&gt;%</span></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">value=</span><span class="fu">sum</span>(value))</span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co"># There are significant relationship between USD/TRY Rate and Cost Index</span></span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>cost_index, <span class="fu">aes</span>(<span class="at">x=</span>date, <span class="at">y=</span>value, <span class="at">group=</span><span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>house_sales_by_districts_preprocessed <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/house_sales_by_districts_preprocessed.xls"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>house_sales <span class="ot">&lt;-</span> house_sales_by_districts_preprocessed <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">morgaged=</span><span class="fu">sum</span>(mortgaged), <span class="at">total=</span><span class="fu">sum</span>(total), <span class="at">first_hand=</span><span class="fu">sum</span>(first_hand), <span class="at">second_hand=</span><span class="fu">sum</span>(second_hand))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>house_sales,<span class="fu">aes</span>(<span class="at">x=</span>year),<span class="at">group =</span> <span class="dv">1</span> ) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>first_hand,<span class="at">color=</span><span class="st">'first_hand'</span>)) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>second_hand,<span class="at">color=</span><span class="st">'second_hand'</span>)) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Year"</span>)<span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Values"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>monthly_usd_to_try, <span class="fu">aes</span>(<span class="at">x=</span>date, <span class="at">y=</span>value, <span class="at">group=</span><span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid" width="672"></p>
-</div>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
