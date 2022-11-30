@@ -295,6 +295,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>When we examine the sales data, although the rate of sales to foreigners has increased over the years, it has remained around 5 percent. Considering this information, it seems difficult for the sale to foreigners to have a significant impact on the market.</li>
 <li>After 2019, we can see that the annual average cost index exceeds the annual average turnover index.Due to the increasing cost index in 2018, new building construction becomes costly, as a result, new building construction remains low in response to new demand. As a result, while the second hand rate increases in sales, it causes an increase in house prices.</li>
 <li>When we examine the relationship between the dollar and TL exchange rate, we conclude that the TL has experienced a high depreciation against the dollar. And we observe that there is a clear correlation between the cost index and the dollar-tl exchange rate relationship.</li>
+<li>With the government’s limit on mortgage in 2021, the sales of housing with credit are decreasing, but the total sales are not decreasing. We see this because people buy houses with the cash they get from other ways because they think that house prices will not decrease.</li>
 </ol>
 <section id="total-sales-with-sales-to-foreigners-and-sales-to-foreigners-share" class="level3">
 <h3 class="anchored" data-anchor-id="total-sales-with-sales-to-foreigners-and-sales-to-foreigners-share">Total sales with Sales To Foreigners and Sales To Foreigners Share (%)</h3>
@@ -401,10 +402,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>HSTFBN <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/HSTFBN.xls"</span>, <span class="at">sheet =</span> <span class="st">"FOREIGNERS BY NATIONALITIES"</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>total_sale_by_country <span class="ot">&lt;-</span> HSTFBN <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year,country) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">sum=</span><span class="fu">sum</span>(total))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>HSTFBN <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/HSTFBN.xls"</span>, <span class="at">sheet =</span> <span class="st">"FOREIGNERS BY NATIONALITIES"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>total_sale_by_country <span class="ot">&lt;-</span> HSTFBN <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year,country) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Russia"</span>,<span class="st">"Iran"</span>, <span class="st">"Iraq"</span>)) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">sum=</span><span class="fu">sum</span>(total))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'year'. You can override using the
@@ -412,11 +412,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2017'den sonra Iran, Irak'i geciyor.</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2021'den 2022'ye gecerken rusya da yuksek bir artis var.</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>total_sale_by_country,<span class="fu">aes</span>(<span class="at">x=</span>year,<span class="at">y=</span>sum,<span class="at">fill=</span>country)) <span class="sc">+</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>,<span class="at">position =</span> <span class="st">"dodge"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>total_sale_by_country,<span class="fu">aes</span>(<span class="at">x=</span>year,<span class="at">y=</span>sum,<span class="at">fill=</span>country)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>,<span class="at">position =</span> <span class="st">"dodge"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="ExploratoryDataAnalysis_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>

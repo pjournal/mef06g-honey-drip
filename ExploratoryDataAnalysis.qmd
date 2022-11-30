@@ -58,7 +58,7 @@ House_sales_to_foreigners_month$Date <- as.yearmon(paste(House_sales_to_foreigne
 1. When we examine the sales data, although the rate of sales to foreigners has increased over the years, it has remained around 5 percent. Considering this information, it seems difficult for the sale to foreigners to have a significant impact on the market.
 2. After 2019, we can see that the annual average cost index exceeds the annual average turnover index.Due to the increasing cost index in 2018, new building construction becomes costly, as a result, new building construction remains low in response to new demand. As a result, while the second hand rate increases in sales, it causes an increase in house prices.
 3. When we examine the relationship between the dollar and TL exchange rate, we conclude that the TL has experienced a high depreciation against the dollar. And we observe that there is a clear correlation between the cost index and the dollar-tl exchange rate relationship.
-
+4. With the government's limit on mortgage in 2021, the sales of housing with credit are decreasing, but the total sales are not decreasing. We see this because people buy houses with the cash they get from other ways because they think that house prices will not decrease.
 
 
 ### Total sales with Sales To Foreigners and Sales To Foreigners Share (%)
@@ -144,14 +144,11 @@ After 2017, Iran overtakes Iraq.
 There is a high increase in Russia as we move from 2021 to 2022. We assume the reason is Ukraine - Russian war. 
 ```{r}
 
-library(readxl)
 HSTFBN <- read_excel("data/HSTFBN.xls", sheet = "FOREIGNERS BY NATIONALITIES")
 
-total_sale_by_country <- HSTFBN %>% group_by(year,country) %>% summarise(sum=sum(total))
+total_sale_by_country <- HSTFBN %>% group_by(year,country) %>% filter(country %in% c("Russia","Iran", "Iraq")) %>% summarise(sum=sum(total))
 
 
-# 2017'den sonra Iran, Irak'i geciyor.
-# 2021'den 2022'ye gecerken rusya da yuksek bir artis var.
 
 ggplot(data=total_sale_by_country,aes(x=year,y=sum,fill=country)) +
   geom_bar(stat="identity",position = "dodge")
