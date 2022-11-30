@@ -1,7 +1,14 @@
 ---
 title: "Exploratory Data Analysis"
-output: html_document
 date: "2022-11-29"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-float: true
+    code-fold: true
+    code-summary: "Show the code"
+    number-sections: false
 ---
 
 ## Necessary libraries 
@@ -49,7 +56,7 @@ House_sales_to_foreigners_month$Date <- as.yearmon(paste(House_sales_to_foreigne
 ```
 ## Key Takeaways
 1. When we examine the sales data, although the rate of sales to foreigners has increased over the years, it has remained around 5 percent. Considering this information, it seems difficult for the sale to foreigners to have a significant impact on the market.
-2. After 2019, we can see that the annual average cost index exceeds the annual average turnover index.
+2. After 2019, we can see that the annual average cost index exceeds the annual average turnover index.Due to the increasing cost index in 2018, new building construction becomes costly, as a result, new building construction remains low in response to new demand. As a result, while the second hand rate increases in sales, it causes an increase in house prices.
 3. When we examine the relationship between the dollar and TL exchange rate, we conclude that the TL has experienced a high depreciation against the dollar. And we observe that there is a clear correlation between the cost index and the dollar-tl exchange rate relationship.
 
 
@@ -83,7 +90,8 @@ ConsIndexYear %>% left_join(TurnoverYear, by = "Year") %>% ggplot(aes(Year)) +
 ```
 
 
-```{r}
+```{r, eval = FALSE}
+
 house_sales_by_provinces  <- house_sales_by_provinces  %>%
     fill(colnames(house_sales_by_provinces[1]), .direction = "downup")
 
@@ -130,10 +138,12 @@ ggplot(data=cost_index, aes(x=date, y=value, group=1)) +
 ```
 
 
+# Yearly sales by nations
 
-
+After 2017, Iran overtakes Iraq.
+There is a high increase in Russia as we move from 2021 to 2022. We assume the reason is Ukraine - Russian war. 
 ```{r}
-# Yillik satista ulkeler
+
 library(readxl)
 HSTFBN <- read_excel("data/HSTFBN.xls", sheet = "FOREIGNERS BY NATIONALITIES")
 
