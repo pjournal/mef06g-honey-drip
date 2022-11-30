@@ -183,6 +183,18 @@ ggplot(data=house_sales,aes(x=year),group = 1 ) +
   ylab("Values")
 ```
 
+### Annual average house sales by provinces (except 2022)
+```{r fig.height = 15, fig.width = 8}
+
+annual_avg_hs <- slice(house_sales_by_provinces %>% 
+    group_by(house_sales_by_provinces[1]) %>% 
+    summarize_if(is.numeric,sum,na.rm = TRUE), 1:(n()-1))[3:82] %>% 
+    summarize_if(is.numeric,mean,na.rm = TRUE)
+
+
+barplot(unlist(annual_avg_hs), col = rainbow(100), las=2, cex.names=.6, horiz = TRUE)
+
+```
 
 
 
