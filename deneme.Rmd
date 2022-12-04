@@ -1,0 +1,249 @@
+---
+title: "Presentation Ninja"
+subtitle: "⚔<br/>with xaringan"
+author: "Yihui Xie"
+institute: "RStudio, PBC"
+date: "2016/12/12 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+```
+
+
+```{r, echo = FALSE}
+library(xaringan)
+suppressPackageStartupMessages(library(tidyverse))
+library(dplyr)
+library(readxl)
+suppressPackageStartupMessages(library(lubridate))
+library(tidyr)
+suppressPackageStartupMessages(library(zoo))
+suppressPackageStartupMessages(library(janitor))
+library(reactable)
+suppressPackageStartupMessages(library(data.table))
+library(ggplot2)
+library(stats)
+```
+
+```{r, echo = FALSE}
+ConsIndex <- readRDS("~/GitHub/mef06g-honey-drip/Datards/ConsIndex.rds")
+Turnover <- readRDS("~/GitHub/mef06g-honey-drip/Datards/Turnover.rds")
+House_sales_to_foreigners_month <- readRDS("~/GitHub/mef06g-honey-drip/Datards/House_sales_to_foreigners_month.rds")
+House_sales_to_foreigners_year <- readRDS("~/GitHub/mef06g-honey-drip/Datards/House_sales_to_foreigners_year.rds")
+
+monthly_usd_to_try <- read_excel("data/monthly_usd_to_try.xls")
+monthly_usd_to_try$month <- as.Date(monthly_usd_to_try$month)
+monthly_usd_to_try$month <- format(monthly_usd_to_try$month,"%Y-%b-%d")
+
+PATH <- "data/House Sales by Provinces.xls"
+house_sales_by_provinces <- read_excel(PATH, range = cell_rows(14:129), col_names = names(read_excel(PATH, skip = 2))) 
+
+total_sales_by_year <- aggregate(house_sales_by_provinces[3], house_sales_by_provinces[1], FUN=sum)
+
+House_sales_to_foreigners_month <- read_excel("data/House sales to foreigners.xls", 
+                                                   sheet = "Month")
+House_sales_to_foreigners_month$Month <- match(House_sales_to_foreigners_month$Month, month.name)
+
+House_sales_to_foreigners_month$Date <- as.yearmon(paste(House_sales_to_foreigners_month$Year, House_sales_to_foreigners_month$Month), "%Y %m")
+construction_cost_index <- read_excel("data/construction_cost_index_by_industries_and_cost_groups_preprocessed.xls")
+
+
+construction_cost_index$date <- as.Date(construction_cost_index$date)
+colnames(construction_cost_index) <- c("date","cost_type","value","material","labour")
+monthly_usd_to_try <- read_excel("data/monthly_usd_to_try.xls")
+
+monthly_usd_to_try$month <- as.Date(monthly_usd_to_try$month)
+colnames(monthly_usd_to_try) <- c("date","value")
+
+```
+
+# Introduction
+
+## Background on foreign house sales in Turkey
+
+In recent years, Turkey has seen a slightly increase in foreign house sales. Although the perception in the society says the opposite, we can see this when we examine the TUIK data.
+
+## Purpose of the presentation
+
+The purpose of this presentation is to provide a detailed analysis of foreign house sales in Turkey, including an examination of construction costs and their relationship to the exchange rate. By understanding these factors, we can gain a better understanding of the current state of the housing market in Turkey and make more informed predictions about its future growth.
+---
+## Current state of foreign house sales in Turkey
+
+### Overview of foreign house sales in Turkey
+
+Foreign house sales in Turkey have increased sil in recent years, with the number of sales to foreign buyers reaching a record high in 2020. This trend has been driven by a number of factors, including Turkey's growing economy, its attractive climate and natural beauty, and its status as a popular tourist destination.
+
+---
+
+```{r, echo = FALSE, fig.width = 10, fig.height = 10, out.width = '70%%', out.height = "70%%"}
+
+p<- ggplot(House_sales_to_foreigners_month, aes(Date))  +
+  ggtitle("Share of foreign house sales in Turkey") + 
+  geom_line(aes(y = `Share (%)`, colour = "Share (%)")) 
+
+ggsave("plot.png", p, width = 5, height = 5, dpi = 300)
+knitr::include_graphics("plot.png", dpi = 300)
+
+```
+---
+### Statistics on foreign house sales in Turkey
+
+To provide a more detailed picture of the current state of foreign house sales in Turkey, here are some key statistics:
+
+- In 2021, the number of foreign house sales in Turkey reached a record high of 58,576 representing an increase of 43,35% compared to the previous year.
+- The majority of foreign house buyers in Turkey are from Middle Eastern countries, including Iraq, Iran, and Kuwait.
+- In the last two years, Russia's housing purchases have increased. We think it's because of the Ukraine war.
+- The most popular cities for foreign house buyers in Turkey are Istanbul, Antalya, and Bursa.
+---
+```{r, echo = FALSE, fig.width = 10, fig.height = 10, out.width = '75%%', out.height = "70%%"}
+
+HSTFBN <- read_excel("data/HSTFBN.xls", sheet = "FOREIGNERS BY NATIONALITIES")
+
+total_sale_by_country <- HSTFBN %>% group_by(year,country) %>% filter(country %in% c("Russia","Iran", "Iraq")) %>% summarise(sum=sum(total), .groups = 'drop')
+
+
+
+p1 <-ggplot(data=total_sale_by_country,aes(x=year,y=sum,fill=country)) +
+  geom_bar(stat="identity",position = "dodge")+
+  ggtitle("House Sales By Nationalities") +
+  xlab("Country") +
+  ylab("House Sales") 
+
+
+ggsave("plot1.png", p1, width = 5, height = 5, dpi = 300)
+knitr::include_graphics("plot1.png", dpi = 300)
+```
+---
+```{r fig.height = 15, fig.width = 8,echo = FALSE,out.width = '50%%', out.height = "50%%"}
+
+annual_avg_hs <- slice(house_sales_by_provinces %>% 
+    group_by(house_sales_by_provinces[1]) %>% 
+    summarize_if(is.numeric,sum,na.rm = TRUE), 1:(n()-1))[3:82] %>% 
+    summarize_if(is.numeric,mean,na.rm = TRUE)
+
+
+barplot(unlist(annual_avg_hs), col = rainbow(100), las=2, cex.names=.6, horiz = TRUE)
+
+```
+
+
+---
+
+## Analysis of construction costs in Turkey
+
+### Overview of construction costs in Turkey
+
+Construction costs in Turkey can vary depending on a number of factors, including the location, type of property, and materials used. Lets look the construction cost index increase.
+---
+```{r, echo = FALSE, fig.width = 10, fig.height = 10, out.width = '70%%', out.height = "70%%"}
+construction_cost_index <- read_excel("data/construction_cost_index_by_industries_and_cost_groups_preprocessed.xls")
+
+
+construction_cost_index$date <- as.Date(construction_cost_index$date)
+colnames(construction_cost_index) <- c("date","cost_type","value","material","labour")
+
+cost_index = construction_cost_index %>% 
+  filter(cost_type=="construction") %>%
+  group_by(date) %>%
+  summarize(value=sum(value))
+p2 <- ggplot(data=cost_index, aes(x=date, y=value, group=1)) +
+  ggtitle("Construction Cost Index") +
+  xlab("Year") +
+  ylab("Index")+
+  geom_line()+
+  geom_point()
+
+ggsave("plot2.png", p2, width = 5, height = 5, dpi = 300)
+knitr::include_graphics("plot2.png", dpi = 300)
+
+```
+
+
+
+---
+### Comparison of construction costs in Turkey to other countries
+
+To provide a better understanding of how construction costs index increase in Turkey compare to European Cost index
+
+![European Cost Index](https://ec.europa.eu/eurostat/statistics-explained/images/2/2e/EU_Construction_prices_and_costs_2005_-_2022%2C_undadjusted_data_%282015_%3D_100%29.png)
+
+As this comparison shows, construction costs in Turkey are significantly lower than in many other major cities around the world.
+
+### Factors affecting construction costs in Turkey
+
+Construction costs in Turkey can be affected by a number of factors, including:
+
+- The location of the property: Construction costs in Turkey can vary depending on the location of the property, with prices generally being higher in urban areas such as Istanbul and lower in rural areas.
+- The type of property: The cost of construction can also vary depending on the type of property, with apartment buildings generally being less expensive to build than single-family homes.
+- The materials used: The materials used in construction can also affect the overall cost, with more expensive materials such as marble and granite increasing the cost of construction.
+## Relationship between exchange rate and foreign house sales in Turkey
+---
+### Overview of the exchange rate in Turkey
+
+The exchange rate is the value of one country's currency relative to another's. In Turkey, the exchange rate is determined by the market and is influenced by a number of factors, including interest rates, inflation, and political stability.
+---
+```{r,echo = FALSE, fig.width = 10, fig.height = 10, out.width = '70%%', out.height = "70%%"}
+p3 <- ggplot(data=monthly_usd_to_try, aes(x=date, y=value, group=1)) +
+  geom_line()+
+  geom_point()
+
+ggsave("plot3.png", p3, width = 5, height = 5, dpi = 300)
+knitr::include_graphics("plot3.png", dpi = 300)
+```
+---
+### Analysis of the relationship between exchange rate and construction cost
+
+Does the exchange rate of the Turkish lira affect the construction cost in Turkey?
+The analysis use statistical techniques such as regression analysis to investigate the relationship between the exchange rate of the Turkish lira and the construction cost index in Turkey.
+---
+### Regression analysis of  exchange rate of the Turkish lira and the construction cost index in Turkey. 
+```{r, echo = FALSE}
+cost_exchange <- readRDS("C:/Users/USER/Desktop/egzersizler/cost_exchange.rds")
+model <- lm(value.x ~ value.y, data = cost_exchange)
+summary(model)
+```
+---
+Based on these values, the strength of the relationship between the dependent and independent variables in the regression model can be assessed as follows:
+
+- The residual standard error of 27.82 indicates that the average deviation of the residuals from the regression line is relatively small, which suggests a good fit of the regression model to the data.
+- The R-squared of 0.9612 indicates that the regression model explains 96.12% of the variance in the dependent variable, which suggests a strong relationship between the dependent and independent variables.
+- The adjusted R-squared of 0.9607 indicates that the regression model explains 96.07% of the variance in the dependent variable, after adjusting for the number of independent variables in the model. This suggests that the relationship between the dependent and independent variables is strong and robust.
+- The F-statistic of 2252 and the p-value less than 2.2e-16 indicate that the null hypothesis that all the coefficients of the regression model are zero can be rejected with a very high level of confidence. This suggests that the relationship between the dependent and independent variables is significant and statistically significant.
+
+Overall, based on these measures and statistics, the strength of the relationship between the dependent and independent variables in the regression model can be considered strong.
+
+---
+### Results & Conclusion
+The results of the analysis could show that there is a negative relationship between the exchange rate of the Turkish lira and the construction cost index in Turkey. This means that when the value of the Turkish lira declines, the construction cost in Turkey tends to go higher.
+
+Conclusion: The conclusion of the analysis could be that the exchange rate of the Turkish lira has a significant impact on the construction cost in Turkey. This finding could be useful for policymakers and construction industry stakeholders to understand the economic factors that affect the construction industry in Turkey and to develop strategies to mitigate the impact of exchange rate fluctuations on construction costs.
+
+---
+## Conclusion and future outlook
+
+### Summary of key points
+
+In this presentation, we have provided a detailed analysis of foreign house sales in Turkey, including an examination of construction costs and their relationship to the exchange rate. We have seen that:
+
+- Foreign house sales in Turkey have increased slight in recent years, with the number of sales to foreign buyers reaching a record high in 2021.
+- Increase in Construction costs in Turkey are generally considered to be relatively high compared to other countries.
+- The exchange rate can have a significant impact on construction cost in Turkey, with a weak lira increasing the construction costs.
+
+---
+### Future outlook for foreign house sales in Turkey and construction costs
+
+Looking ahead, the future outlook for foreign house sales in Turkey and construction costs is uncertain. However, there are several factors that could potentially impact the market, including:
+
+- Economic growth: If Turkey's economy continues to grow and the lira remains stable, it could create favorable conditions for foreign house sales and construction activity.
+- Interest rates: Changes in interest rates could affect the demand for housing and the cost of borrowing, potentially impacting foreign house sales and construction costs.
+- Political instability: If political instability increases in Turkey, it could create uncertainty and potentially lead to a decrease in foreign house sales and construction activity.
+
+Overall, the future outlook for foreign house sales in Turkey and construction costs will depend on a range of factors, and it is difficult to predict with certainty what the future holds. However, by understanding the current state of the market and the factors that can affect it, we can gain a better understanding of the potential challenges and opportunities that lie ahead.
