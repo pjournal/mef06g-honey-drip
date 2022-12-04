@@ -206,7 +206,7 @@ The analysis use statistical techniques such as regression analysis to investiga
 ---
 ### Regression analysis of  exchange rate of the Turkish lira and the construction cost index in Turkey. 
 ```{r, echo = FALSE}
-cost_exchange <- readRDS("C:/Users/USER/Desktop/egzersizler/cost_exchange.rds")
+cost_exchange <- readRDS("~/GitHub/mef06g-honey-drip/cost_exchange.rds")
 model <- lm(value.x ~ value.y, data = cost_exchange)
 summary(model)
 ```
