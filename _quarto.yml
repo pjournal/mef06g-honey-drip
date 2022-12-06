@@ -10,7 +10,6 @@ book:
     - assignment1.qmd
     - preprocessing.qmd
     - ExploratoryDataAnalysis.qmd
-    - deneme.Rmd
   page-footer: 
     center: "[MEF BDA 503](https://mef-bda503.github.io)" 
   sharing: [twitter, facebook]
