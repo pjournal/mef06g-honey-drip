@@ -1,0 +1,13 @@
+name: HoneyDrip
+title: HoneyDrip
+username:
+account: honeydrip
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7909051
+bundleId: 6647924
+url: https://honeydrip.shinyapps.io/HoneyDrip/
+when: 1671277482.6803
+lastSyncTime: 1671277482.68031
+asMultiple: FALSE
+asStatic: FALSE

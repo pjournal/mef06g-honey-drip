@@ -1,0 +1,26 @@
+---
+title: "Shiny App"
+output: 
+   html_document:
+   toc: true
+date: "2022-11-25"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Shiny Application
+
+This application has 1 main functions.
+
+1. With data table you can select and filter by city name.
+
+
+## Link to Shinyapps.io
+
+[My Shiny App](https://honeydrip.shinyapps.io/HoneyDrip/)
+
+## Command Line
+
+
