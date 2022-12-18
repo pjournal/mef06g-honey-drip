@@ -9,6 +9,9 @@ format:
     code-fold: true
     code-summary: "Show the code"
     number-sections: false
+editor: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r setup, include=FALSE}
@@ -29,6 +32,7 @@ library(data.table)
 library(ggplot2)
 library(stats)
 library(DT)
+library(scales)
 ```
 
 ```{r}
@@ -43,24 +47,26 @@ total_sales_by_year <- aggregate(house_sales_by_provinces[3], house_sales_by_pro
 House_sales_to_foreigners_month <- read_excel("data/House sales to foreigners.xls", 
                                                     sheet = "Month")
 monthly_usd_to_try <- read_excel("data/monthly_usd_to_try.xls")
-cost_exchange <- readRDS("~/GitHub/mef06g-honey-drip/cost_exchange.rds")
+cost_exchange <- readRDS("cost_exchange.rds")
 HSTFBN <- read_excel("data/HSTFBN.xls", sheet = "FOREIGNERS BY NATIONALITIES")
 House_sales_to_foreigners_by_province <- read_excel("data/House sales to foreigners by province.xls", 
                                                     sheet = "HouseSalesByProvince")
+
+house_sales_by_districts_preprocessed <- readRDS("Datards/house_sales_by_districts_preprocessed.rds")
 ```
 
 # Key Takeaways
-1. When we examine the sales data, although the rate of sales to foreigners has increased over the years, it has remained around 5%. Considering this information, it seems difficult for foreign sales to have a significant impact on the market.
-2. After 2019, we can see that the annual average cost index exceeds the annual average turnover index. Due to the increasing cost index in 2018, new building construction became costly, resulting in a low response to new demand. As a result, the second-hand rate increased in sales, causing an increase in house prices.
-3. When we examine the relationship between the dollar and TL exchange rate, we conclude that the TL has experienced a high depreciation against the dollar. We also observe a clear correlation between the cost index and the dollar-TL exchange rate relationship.
-4. With the government's limit on mortgages in 2021, the sales of housing with credit have decreased, but total sales have not decreased. We see this because people buy houses with cash from other sources, as they believe that house prices will not decrease.
+
+1.  When we examine the sales data, although the rate of sales to foreigners has increased over the years, it has remained around 5%. Considering this information, it seems difficult for foreign sales to have a significant impact on the market.
+2.  After 2019, we can see that the annual average cost index exceeds the annual average turnover index. Due to the increasing cost index in 2018, new building construction became costly, resulting in a low response to new demand. As a result, the second-hand rate increased in sales, causing an increase in house prices.
+3.  When we examine the relationship between the dollar and TL exchange rate, we conclude that the TL has experienced a high depreciation against the dollar. We also observe a clear correlation between the cost index and the dollar-TL exchange rate relationship.
+4.  With the government's limit on mortgages in 2021, the sales of housing with credit have decreased, but total sales have not decreased. We see this because people buy houses with cash from other sources, as they believe that house prices will not decrease.
 
 # Overview and Preparation
 
 We are importing construction cost index, Turnover rate, usd to tl exchange rate, House sales to foreigners, House Sales by Province data sets and more datasets.
 
-Objectives of this project is as follows:
-- Clean and analyze data on foreign house sales in Turkey to extract insights and understand the current state of the housing market.
+Objectives of this project is as follows: - Clean and analyze data on foreign house sales in Turkey to extract insights and understand the current state of the housing market.
 - Visualize the data according to different variables such as construction costs, exchange rates, and demand to better understand their impact on foreign house sales.
 - Perform exploratory and explanatory analysis on the data to identify trends and patterns.
 - Analyze the relationship between construction costs, exchange rates, and other factors such as economic conditions and demand to make more informed predictions about the future growth of the housing market in Turkey.
@@ -70,11 +76,15 @@ Objectives of this project is as follows:
 
 ### Overview of foreign house sales in Turkey
 
-Foreign house sales in Turkey have increased sil in recent years, with the number of sales to foreign buyers reaching a record high in 2020. This trend has been driven by a number of factors, including Turkey's growing economy, its attractive climate and natural beauty, and its status as a popular tourist destination.
+Foreign house sales in Turkey have increased sil in recent years, with the number of sales to foreign buyers reaching a record high in 2020.
+This trend has been driven by a number of factors, including Turkey's growing economy, its attractive climate and natural beauty, and its status as a popular tourist destination.
 
 # Data Preprocessing and Wrangling
 
-To better understand the factors that impact foreign house sales in Turkey, we may need to change some data types in order to more effectively analyze the data. For example, we may need to convert certain variables such as construction costs and exchange rates from raw data into more meaningful metrics. By cleaning and transforming the data in this way, we can gain a deeper understanding of the trends and patterns in the housing market and make more informed predictions about its future growth.
+To better understand the factors that impact foreign house sales in Turkey, we may need to change some data types in order to more effectively analyze the data.
+For example, we may need to convert certain variables such as construction costs and exchange rates from raw data into more meaningful metrics.
+By cleaning and transforming the data in this way, we can gain a deeper understanding of the trends and patterns in the housing market and make more informed predictions about its future growth.
+
 ```{r}
 monthly_usd_to_try$month <- as.Date(monthly_usd_to_try$month)
 colnames(monthly_usd_to_try) <- c("date","value")
@@ -83,11 +93,18 @@ House_sales_to_foreigners_month$Month <- match(House_sales_to_foreigners_month$M
 
 House_sales_to_foreigners_month$Date <- as.yearmon(paste(House_sales_to_foreigners_month$Year, House_sales_to_foreigners_month$Month), "%Y %m")
 ```
-# Data Analysis
-## Total sales with Sales To Foreigners and Sales To Foreigners Share (%)
-Overall, total sales of houses in the country remained strong during the period. Sales to foreigners accounted for a small portion of total sales, at 3%. The sales to foreigners share was within the acceptable range of 3-5.5%, indicating that the level of foreign demand for houses in the country was not significantly impacting the domestic market.
 
-It is important to monitor the level of foreign demand for houses in the country, as excessive foreign demand could potentially drive up prices and make housing less affordable for domestic buyers. Efforts should be made to maintain a balanced mix of domestic and foreign demand in order to ensure the long-term stability of the housing market.
+# Data Analysis
+
+## Total sales with Sales To Foreigners and Sales To Foreigners Share (%)
+
+Overall, total sales of houses in the country remained strong during the period.
+Sales to foreigners accounted for a small portion of total sales, at 3%.
+The sales to foreigners share was within the acceptable range of 3-5.5%, indicating that the level of foreign demand for houses in the country was not significantly impacting the domestic market.
+
+It is important to monitor the level of foreign demand for houses in the country, as excessive foreign demand could potentially drive up prices and make housing less affordable for domestic buyers.
+Efforts should be made to maintain a balanced mix of domestic and foreign demand in order to ensure the long-term stability of the housing market.
+
 ```{r}
 ggplot(House_sales_to_foreigners_month, aes(Date)) + 
   geom_line(aes(y = Total, colour = "Total")) + 
@@ -99,6 +116,7 @@ ggplot(House_sales_to_foreigners_month, aes(Date)) +
 ```
 
 ## Statistics on foreign house sales in Turkey
+
 ```{r}
 
 total_sale_by_country <- HSTFBN %>% group_by(year,country) %>% filter(country %in% c("Russia","Iran", "Iraq")) %>% summarise(sum=sum(total), .groups = 'drop')
@@ -120,19 +138,22 @@ datatable(House_sales_to_foreigners_by_province)
 
 ```
 
-
 To provide a more detailed picture of the current state of foreign house sales in Turkey, here are some key statistics:
 
-- In 2021, the number of foreign house sales in Turkey reached a record high of 58,576 representing an increase of 43,35% compared to the previous year.
-- The majority of foreign house buyers in Turkey are from Middle Eastern countries, including Iraq, Iran, and Kuwait.
-- In the last two years, Russia's housing purchases have increased. We think it's because of the Ukraine war.
-- The most popular cities for foreign house buyers in Turkey are Istanbul, Antalya, and Bursa.
+-   In 2021, the number of foreign house sales in Turkey reached a record high of 58,576 representing an increase of 43,35% compared to the previous year.
+-   The majority of foreign house buyers in Turkey are from Middle Eastern countries, including Iraq, Iran, and Kuwait.
+-   In the last two years, Russia's housing purchases have increased. We think it's because of the Ukraine war.
+-   The most popular cities for foreign house buyers in Turkey are Istanbul, Antalya, and Bursa.
 
 ## Construction cost and Turnover index comparision
 
-The construction cost index and turnover index were compared for the year 2015 and subsequent years. In 2019, the construction cost index exceeded the turnover index, indicating that the cost of construction was outpacing the revenue generated from construction projects. This trend continued in the following years, with the construction cost index consistently exceeding the turnover index.
+The construction cost index and turnover index were compared for the year 2015 and subsequent years.
+In 2019, the construction cost index exceeded the turnover index, indicating that the cost of construction was outpacing the revenue generated from construction projects.
+This trend continued in the following years, with the construction cost index consistently exceeding the turnover index.
 
-This is a concerning trend, as it suggests that the construction industry is becoming less profitable over time. It may be necessary to reassess business strategies and cost-saving measures in order to address this issue and improve the financial viability of construction projects. It will also be important to monitor any changes in market conditions that may be contributing to the widening gap between the construction cost index and turnover index.
+This is a concerning trend, as it suggests that the construction industry is becoming less profitable over time.
+It may be necessary to reassess business strategies and cost-saving measures in order to address this issue and improve the financial viability of construction projects.
+It will also be important to monitor any changes in market conditions that may be contributing to the widening gap between the construction cost index and turnover index.
 
 ```{r}
 ConsIndexYear <- ConsIndex %>% group_by(Year) %>% summarise(Construction_cost_mean = mean(index, na.rm = TRUE))
@@ -153,13 +174,18 @@ ConsIndexYear %>% left_join(TurnoverYear, by = "Year") %>% ggplot(aes(Year)) +
 
 To provide a better understanding of how construction costs index increase in Turkey compare to European Cost index
 
-![European Cost Index](https://ec.europa.eu/eurostat/statistics-explained/images/2/2e/EU_Construction_prices_and_costs_2005_-_2022%2C_undadjusted_data_%282015_%3D_100%29.png)
+![European Cost Index](https://ec.europa.eu/eurostat/statistics-explained/images/2/2e/EU_Construction_prices_and_costs_2005_-_2022%252C_undadjusted_data_(2015_%253D_100).png)
 
-The construction cost index in Turkey has been increasing at a faster rate compared to the construction cost index in Europe. Over the past year, the construction cost index in Turkey has increased at least six times more than the construction cost index in Europe. This trend suggests that the cost of construction in Turkey is rising more quickly than the cost of construction in Europe.
+The construction cost index in Turkey has been increasing at a faster rate compared to the construction cost index in Europe.
+Over the past year, the construction cost index in Turkey has increased at least six times more than the construction cost index in Europe.
+This trend suggests that the cost of construction in Turkey is rising more quickly than the cost of construction in Europe.
 
-Understanding the reasons behind this trend is important in order to address the issue and improve the financial viability of construction projects in Turkey. It may be necessary to reassess business strategies and cost-saving measures in order to better manage construction costs in Turkey. It will also be important to monitor any changes in market conditions that may be contributing to the increasing construction cost index in Turkey.
+Understanding the reasons behind this trend is important in order to address the issue and improve the financial viability of construction projects in Turkey.
+It may be necessary to reassess business strategies and cost-saving measures in order to better manage construction costs in Turkey.
+It will also be important to monitor any changes in market conditions that may be contributing to the increasing construction cost index in Turkey.
 
 ### Analysis of the relationship between exchange rate and construction cost
+
 ```{r}
 ggplot(data=monthly_usd_to_try, aes(x=date, y=value, group=1)) +
   geom_line()+
@@ -172,25 +198,76 @@ ggplot(data=monthly_usd_to_try, aes(x=date, y=value, group=1)) +
 We asked our-self does the exchange rate of the Turkish lira affect the construction cost in Turkey?
 The analysis use statistical techniques such as regression analysis to investigate the relationship between the exchange rate of the Turkish lira and the construction cost index in Turkey.
 
-### Regression analysis of  exchange rate of the Turkish lira and the construction cost index in Turkey.
+### Regression analysis of exchange rate of the Turkish lira and the construction cost index in Turkey.
 
 ```{r}
 model <- lm(value.x ~ value.y, data = cost_exchange)
 summary(model)
 ```
+
 Based on these values, the strength of the relationship between the dependent and independent variables in the regression model can be assessed as follows:
 
-- The residual standard error of 27.82 indicates that the average deviation of the residuals from the regression line is relatively small, which suggests a good fit of the regression model to the data.
-- The R-squared of 0.9612 indicates that the regression model explains 96.12% of the variance in the dependent variable, which suggests a strong relationship between the dependent and independent variables.
-- The adjusted R-squared of 0.9607 indicates that the regression model explains 96.07% of the variance in the dependent variable, after adjusting for the number of independent variables in the model. This suggests that the relationship between the dependent and independent variables is strong and robust.
-- The F-statistic of 2252 and the p-value less than 2.2e-16 indicate that the null hypothesis that all the coefficients of the regression model are zero can be rejected with a very high level of confidence. This suggests that the relationship between the dependent and independent variables is significant and statistically significant.
+-   The residual standard error of 27.82 indicates that the average deviation of the residuals from the regression line is relatively small, which suggests a good fit of the regression model to the data.
+-   The R-squared of 0.9612 indicates that the regression model explains 96.12% of the variance in the dependent variable, which suggests a strong relationship between the dependent and independent variables.
+-   The adjusted R-squared of 0.9607 indicates that the regression model explains 96.07% of the variance in the dependent variable, after adjusting for the number of independent variables in the model. This suggests that the relationship between the dependent and independent variables is strong and robust.
+-   The F-statistic of 2252 and the p-value less than 2.2e-16 indicate that the null hypothesis that all the coefficients of the regression model are zero can be rejected with a very high level of confidence. This suggests that the relationship between the dependent and independent variables is significant and statistically significant.
 
 Overall, based on these measures and statistics, the strength of the relationship between the dependent and independent variables in the regression model can be considered strong.
 
+### Analysis of First-Hand & Second-Hand Sales and Total Sales & Morgaged Sales
+
+The exchange rate crisis in Turkey are contributing to an increase in construction costs. When the value of a Turkey's currency decreases, it make imports more expensive, which can impact the cost of materials and other inputs that are used in the construction industry. 
+
+When construction costs increase, it can make it more expensive to build new houses, which could lead developers to build fewer homes or to pass on the higher costs to buyers in the form of higher prices. 
+
+The increase in construction costs were contributing to a decrease in the number of new houses being built, which in turn led to a decrease in first-hand house sales and an increase in second-hand sales since 2018. 
+
+When demand for housing is high and there is a limited supply of homes available, it can drive up prices as buyers compete for the available properties. This is the situtation happening in Turkey. In an effort to control rising house prices, the government implemented new policy measures which is limiting mortgage credit. As can be seen from the graphs, this effort did not significantly effect the total house sales while it decreases the morgaged house sales. There could be many reason behind this effect such as taking personal finance credit to buy house, changing savings such as gold and foreign currency to buy house. 
+
+```{r}
+house_sales <- house_sales_by_districts_preprocessed %>%
+  group_by(year) %>%
+  summarise(morgaged=sum(mortgaged), total=sum(total), first_hand=sum(first_hand), second_hand=sum(second_hand))
+
+ggplot(data=house_sales,aes(x=year),group = 1 ) +
+  geom_line(aes(y=first_hand,color='first_hand')) +
+  geom_line(aes(y=second_hand,color='second_hand')) +
+  labs(title="Total First Hand & Second Hand House Sales")+
+  xlab("Year")+
+  ylab("Total House Sales")+ 
+  scale_y_continuous(labels = label_comma())
+```
+
+
+```{r}
+
+house_sales <- house_sales_by_districts_preprocessed %>%
+  group_by(year) %>%
+  summarise(morgaged=sum(mortgaged), total=sum(total), first_hand=sum(first_hand), second_hand=sum(second_hand))
+
+
+ggplot(data=house_sales,aes(x=year),group = 1 ) +
+  geom_line(aes(y=morgaged,color='morgaged')) +
+  geom_line(aes(y=total,color='total'))+
+  labs(title="Total House Sales & Morgaged House Sales")+
+  xlab("Year")+
+  ylab("Total Sales")+ 
+  scale_y_continuous(labels = label_comma())
+
+```
+
+
 # Conclusion
 
-In conclusion, the housing market in Turkey has been facing some challenges in recent years, including rising construction costs and the impact of exchange rates. Foreign house sales in Turkey have increased slightly, but still only account for a small portion (around 5%) of total sales. The construction cost index in Turkey has been increasing at a faster rate compared to the construction cost index in Europe, making construction in Turkey less profitable. The exchange rate between the Turkish lira and other currencies can also impact construction costs and foreign house sales, with a weak lira increasing costs and making properties less affordable for foreign buyers.
+In conclusion, the housing market in Turkey has been facing some challenges in recent years, including rising construction costs and the impact of exchange rates.
+Foreign house sales in Turkey have increased slightly, but still only account for a small portion (around 5%) of total sales.
+The construction cost index in Turkey has been increasing at a faster rate compared to the construction cost index in Europe, making construction in Turkey less profitable.
+The exchange rate between the Turkish lira and other currencies can also impact construction costs and foreign house sales, with a weak lira increasing costs and making properties less affordable for foreign buyers.
 
-It is important to continue monitoring these and other factors in order to better understand the current state of the housing market in Turkey and make more informed predictions about its future growth. The level of foreign demand for houses in Turkey should also be monitored in order to ensure a balanced mix of domestic and foreign demand and maintain the long-term stability of the market. The government's limit on mortgages in 2021 has decreased sales of housing with credit, but total sales have not decreased as people are buying houses with cash from other sources. The most popular cities for foreign house buyers in Turkey are Istanbul, Antalya, and Bursa.
+It is important to continue monitoring these and other factors in order to better understand the current state of the housing market in Turkey and make more informed predictions about its future growth.
+The level of foreign demand for houses in Turkey should also be monitored in order to ensure a balanced mix of domestic and foreign demand and maintain the long-term stability of the market.
+The government's limit on mortgages in 2021 has decreased sales of housing with credit, but total sales have not decreased as people are buying houses with cash from other sources.
+The most popular cities for foreign house buyers in Turkey are Istanbul, Antalya, and Bursa.
 
-Overall, it will be important to carefully analyze the trends and patterns in the market and the factors that can affect them in order to identify potential challenges and opportunities. By doing so, it will be possible to make informed decisions and plan for the future growth of the housing market in Turkey.
+Overall, it will be important to carefully analyze the trends and patterns in the market and the factors that can affect them in order to identify potential challenges and opportunities.
+By doing so, it will be possible to make informed decisions and plan for the future growth of the housing market in Turkey.
