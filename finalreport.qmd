@@ -107,11 +107,11 @@ Efforts should be made to maintain a balanced mix of domestic and foreign demand
 
 ```{r}
 ggplot(House_sales_to_foreigners_month, aes(Date)) + 
-  geom_line(aes(y = Total, colour = "Total")) + 
-  geom_line(aes(y = `Sales to foreigners`, colour = "Sales To Foreigners"))
+  geom_line(aes(y = `Share (%)`, colour = "Share (%)"))+
+   ggtitle("Sales To Foreigners Share") +
+  xlab("Year") +
+  ylab("Share") 
 
-ggplot(House_sales_to_foreigners_month, aes(Date)) + 
-  geom_line(aes(y = `Share (%)`, colour = "Share (%)"))
 
 ```
 
