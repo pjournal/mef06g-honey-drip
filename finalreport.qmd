@@ -67,6 +67,7 @@ house_sales_by_districts_preprocessed <- readRDS("Datards/house_sales_by_distric
 We are importing construction cost index, Turnover rate, usd to tl exchange rate, House sales to foreigners, House Sales by Province data sets and more datasets.
 
 Objectives of this project is as follows: - Clean and analyze data on foreign house sales in Turkey to extract insights and understand the current state of the housing market.
+
 - Visualize the data according to different variables such as construction costs, exchange rates, and demand to better understand their impact on foreign house sales.
 - Perform exploratory and explanatory analysis on the data to identify trends and patterns.
 - Analyze the relationship between construction costs, exchange rates, and other factors such as economic conditions and demand to make more informed predictions about the future growth of the housing market in Turkey.
