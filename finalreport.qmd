@@ -175,7 +175,7 @@ ConsIndexYear %>% left_join(TurnoverYear, by = "Year") %>% ggplot(aes(Year)) +
 
 To provide a better understanding of how construction costs index increase in Turkey compare to European Cost index
 
-![European Cost Index](/GitHub/mef06g-honey-drip/EU_Construction_prices_and_costs_2005_-_2022,_undadjusted_data_(2015_=_100).png)
+![European Cost Index](EU_Construction_prices_and_costs_2005_-_2022,_undadjusted_data_(2015_=_100).png)
 
 The construction cost index in Turkey has been increasing at a faster rate compared to the construction cost index in Europe.
 Over the past year, the construction cost index in Turkey has increased at least six times more than the construction cost index in Europe.
